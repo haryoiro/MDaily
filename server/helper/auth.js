@@ -1,7 +1,7 @@
 // const crypto = require('crypto')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { SECRET } = require('../config/key')
+const { SECRET } = require('../config')
 
 // function validPassword(password, hash, salt) {
 //   const hashVerify = crypto

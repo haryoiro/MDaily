@@ -7,7 +7,7 @@ const mongoose = require('mongoose')
 const log = require('./helper/decoratedLogger')
 
 /* Config */
-const { MONGODB_URI, MONGODB_CONFIG } = require('./config/key')
+const { MONGODB_URI, MONGODB_CONFIG } = require('./config')
 
 /* Middleware */
 const {
