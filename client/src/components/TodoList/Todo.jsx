@@ -6,11 +6,6 @@ import { useField, useToggle, useAutoFocus } from '../../hooks/index'
 import { getTodo, createTodo } from '../../services/todoAccess'
 
 import { asyncNotification } from '../Notification/notificationSlice'
-
-// Markdown Parser
-// １行ごとパースしてHTMLに変換
-// クリックしたらその行のみ入力ボックスに変換
-
 import MarkdownBox from './MarkdownBox'
 
 export function Todo() {
@@ -21,32 +16,16 @@ export function Todo() {
 
   return (
     <div>
-      {data.map(t => (
-        <>
-          {t.lines.map(l => (
-            <>
-              <MarkdownBox value={l} id={t.id + t.lines.indexOf(l).toString()} key={t.id + t.lines.indexOf(l).toString()} />
-            </>
-            )
-            )}
-          {/* <ToggleComplete value={t.complete} id={t.id}/> */}
-        </>
-      ))}
+      {
+        data.map(a => a.lines.map(l =>
+          <MarkdownBox value={l} />
+        ))
+      }
       <TodoForm />
     </div>
   )
 }
 
-// function ToggleComplete({ value, id }) {
-//   const [mutate] = useMutation(createTodo, {
-//     onSuccess: () => {
-//       queryCache.invalidateQueries('todo')
-//     }
-//   })
-//   console.log('mutate', mutate)
-
-//   return <button onClick={() => mutate()}>Toggle</button>
-// }
 
 export function TodoForm() {
   const dispatch = useDispatch()
@@ -74,6 +53,7 @@ export function TodoForm() {
       const returnedData = await mutate(newContent)
       title.onClear()
       lines.onClear()
+      console.log(returnedData)
     } catch (error) {
       console.error(error.message)
     }

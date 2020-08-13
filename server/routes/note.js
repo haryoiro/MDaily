@@ -1,5 +1,5 @@
 const todoRouter = require('express').Router()
-const Todo = require('../models/Todo')
+const Todo = require('../models/Board')
 
 todoRouter.get('/', async (req, res) => {
   const allTodo = await Todo.find({})

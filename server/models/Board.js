@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign, no-underscore-dangle */
 const { Schema, model, Types } = require('mongoose')
 
-const todoSchema = new Schema(
+const boardSchema = new Schema(
   {
     title: {
       type: String,
@@ -11,10 +11,6 @@ const todoSchema = new Schema(
       type: [String],
       default: '',
     },
-    // complete: {
-    //   type: Boolean,
-    //   default: false,
-    // },
     user: {
       type: Types.ObjectId,
       ref: 'User',
@@ -28,7 +24,7 @@ const todoSchema = new Schema(
   },
 )
 
-todoSchema.set('toJSON', {
+boardSchema.set('toJSON', {
   transform: (doc, ret) => {
     ret.id = ret._id.toString()
     delete ret._id
@@ -36,6 +32,6 @@ todoSchema.set('toJSON', {
   },
 })
 
-const Todo = model('Todo', todoSchema)
+const Board = model('Board', boardSchema)
 
-module.exports = Todo
+module.exports = Board

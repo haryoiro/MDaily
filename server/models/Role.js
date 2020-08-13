@@ -8,6 +8,8 @@ const roleSchema = new Schema({
   role: String,
 })
 
+// https://grokonez.com/node-js/jwt/node-js-jwt-authentication-mongodb-express-restapis-json-web-token-bcryptjs-mongoose
+
 roleSchema.set('toJSON', {
   transform: (doc, ret) => {
     ret.id = ret._id.toString()

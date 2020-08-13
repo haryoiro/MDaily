@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign, no-underscore-dangle */
 const {
-  Schema, model,
-  // Types
+  Schema, model, Types,
 } = require('mongoose')
 
 const userSchema = Schema({
@@ -10,20 +9,26 @@ const userSchema = Schema({
     minlength: 5,
     maxlength: 50,
   },
+  email: {
+    type: String,
+  },
   hash: {
     type: String,
   },
-  salt: {
+  thumbnail: {
     type: String,
+    default: '',
   },
-  // role: {
-  //     type: Types.ObjectId,
-  //     ref: 'Role',
-  // },
-  // todo: [{
-  //     type: Types.ObjectId,
-  //     ref: 'Todo',
-  // }]
+  roles: [{
+    type: Types.ObjectId,
+    ref: 'Role',
+    default: [],
+  }],
+  notes: [{
+    type: Types.ObjectId,
+    ref: 'Board',
+    default: [],
+  }],
 })
 
 userSchema.set('toJSON', {

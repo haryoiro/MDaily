@@ -39,8 +39,6 @@ export function useToggle(value) {
   }
 }
 
-// @seya 2019年12月04日に投稿【React】マウント時に自動でfocusあてるhooks
-// https://qiita.com/seya/items/fd8b49e5c79d471d62e4
 export function useAutoFocus() {
   const [value, setValue] = useState(false)
   const inputRef = useRef(null)
@@ -52,7 +50,7 @@ export function useAutoFocus() {
     }
   }, [value]);
 
-  function change() { 
+  function change() {
     setValue(!value)
   }
 

@@ -1,8 +1,11 @@
 import React from 'react'
 import { Todo } from './components/TodoList/Todo'
 import { Notification } from './components/Notification/Notification'
+// import MarkdownBox from './components/TodoList/MarkdownBox'
 
 import { ReactQueryDevtools } from 'react-query-devtools'
+
+// https://vivliostyle.github.io/vivliostyle_doc/ja/vivliostyle-user-group-vol2/spring-raining/index.html
 
 export default function App() {
   return (
@@ -12,7 +15,6 @@ export default function App() {
         <ReactQueryDevtools />
       }
       <header>
-        <h1>TODO</h1>
         <Notification />
       </header>
       <Todo />
