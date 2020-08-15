@@ -1,4 +1,4 @@
-const JwtStrategy = require('passport-jwt').Strategy
+const { Strategy } = require('passport-jwt')
 const { ExtractJwt } = require('passport-jwt')
 const User = require('../models/User')
 
@@ -10,7 +10,7 @@ const options = {
   algorithms: ['RS256'],
 }
 
-const strategy = new JwtStrategy(options, (payload, done) => {
+const strategy = new Strategy(options, (payload, done) => {
   User.findOne({ _id: payload.sub })
     .then((user) => {
       if (user) return done(null, user)

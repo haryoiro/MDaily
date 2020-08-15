@@ -1,14 +1,13 @@
 const authRouter = require('express').Router()
-
 const { User } = require('../models/User')
-const utils = require('../helper/auth')
+const utils = require('../helpers/auth')
 
 const {
-  authenticatePassport,
   checkDuplicateUserNameOrEmail,
-} = require('../middleware/authenticateChecker')
+} = require('../middlewares/authenticateChecker')
 
-authRouter.get('/protected', authenticatePassport, (req, res) => {
+authRouter.get('/protected', async (req, res) => {
+  console.log(req.body)
   res.status(200).json({
     success: true,
     message: 'you are authorized.',

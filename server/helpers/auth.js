@@ -1,33 +1,12 @@
 // const crypto = require('crypto')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { SECRET } = require('../config')
-
-// function validPassword(password, hash, salt) {
-//   const hashVerify = crypto
-//     .pbkdf2Sync(password, salt, 10000, 64, 'sha512')
-//     .toString('hex')
-//   return hash === hashVerify
-// }
+const { SECRET } = require('../configs')
 
 async function validPassword(password, hash) {
   const passwordIsValid = await bcrypt.compare(password, hash)
   return passwordIsValid
 }
-
-// PasswordHash generate script using crypto
-// bcrypt better than crypto. don't use this script
-// function genPassword(password) {
-//   const salt = crypto.randomBytes(32).toString('hex')
-//   const hash = crypto
-//     .pbkdf2Sync(password, salt, 10000, 64, 'sha512')
-//     .toString('hex')
-
-//   return {
-//     salt,
-//     hash,
-//   }
-// }
 
 const saltRound = 10
 async function genPassword(password) {

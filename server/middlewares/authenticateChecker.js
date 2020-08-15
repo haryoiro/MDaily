@@ -1,4 +1,3 @@
-const passport = require('passport')
 const User = require('../models/User')
 
 async function checkDuplicateUserNameOrEmail(req, res, next) {
@@ -21,9 +20,6 @@ async function checkDuplicateUserNameOrEmail(req, res, next) {
   return next()
 }
 
-const authenticatePassport = passport.authenticate('jwt', { session: false })
-
 module.exports = {
   checkDuplicateUserNameOrEmail,
-  authenticatePassport,
 }
