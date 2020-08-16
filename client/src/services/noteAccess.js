@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { TODO_URI } from '../app/config'
+import { NOTE_URI } from '../app/config'
 
 export async function setToken(newToken) {
   const token = `Bearer ${newToken}`
@@ -8,12 +8,12 @@ export async function setToken(newToken) {
   }
 }
 
-export async function getTodo() {
-  const res = await axios.get(TODO_URI)
+export async function getNote() {
+  const res = await axios.get(NOTE_URI)
   return res.data
 }
 
-export async function createTodo(newTodo) {
-  const res = await axios.post(TODO_URI, newTodo)
+export async function createNote(newNote) {
+  const res = await axios.post(NOTE_URI, newNote)
   return res.data
 }

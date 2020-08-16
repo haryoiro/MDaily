@@ -1,5 +1,5 @@
 import React from 'react'
-import { Todo } from './components/TodoList/Todo'
+import { Note } from './components/NoteList/Note'
 import { Notification } from './components/Notification/Notification'
 // import MarkdownBox from './components/TodoList/MarkdownBox'
 
@@ -17,7 +17,7 @@ export default function App() {
       <header>
         <Notification />
       </header>
-      <Todo />
+      <Note />
     </div>
   )
 }

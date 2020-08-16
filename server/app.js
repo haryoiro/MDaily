@@ -38,7 +38,7 @@ app.use(express.json())
 app.use(httpRequestLogger)
 
 /* Routes */
-app.use('/api/todo', require('./routes/note'))
+app.use('/api/note', require('./routes/note'))
 app.use('/api/auth', require('./routes/auth'))
 
 if (process.env.NODE_ENV !== 'production') {
