@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
-import { createEditor } from 'slate'
+import { createEditor, Editor, Transforms } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 
 export function SlateEditor() {
@@ -29,9 +29,18 @@ export function SlateEditor() {
       <Editable
         renderElement={renderElement}
         onKeyDown={e => {
-          if (e.key === '&') {
+          if (e.key === '`' && e.ctrlKey) {
             e.preventDefault()
-            editor.insertText('and')
+            // 現在選択されているブロックが`code`ブロックであるかどうかを判断
+            const [match] = Editor.nodes(editor, {
+              match: n => n.type === 'code',
+            })
+            // ブロックタイプが'paragtaph'か'code'いずれかの場合それらを交互に切り替える
+            Transforms.setNodes(
+              editor,
+              { type: match ? 'paragraph' : 'code' },
+              { match: n => Editor.isBlock(editor, n)}
+            )
           }
       }}/>
     </Slate>
