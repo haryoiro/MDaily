@@ -13,7 +13,6 @@ import './components/MainEditor/styles/megadraft/megadraft.scss'
 export default function App() {
   return (
     <>
-      <MainEditor />
       <SlateEditor />
     </>
   )

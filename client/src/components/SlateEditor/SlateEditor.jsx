@@ -8,14 +8,82 @@ import {
   EditablePlugins,
   ItalicPlugin,
   UnderlinePlugin,
-  pipe
+  CodePlugin,
+  StrikethroughPlugin,
+  BlockquotePlugin,
+  ListPlugin,
+  HeadingPlugin,
+  CodeBlockPlugin,
+  ResetBlockTypePlugin,
+  SoftBreakPlugin,
+  ExitBreakPlugin,
+  withAutoformat,
+  withList,
+  withToggleType,
+  withTransforms,
+  pipe,
 } from '@udecode/slate-plugins'
+import {
+  headingTypes,
+  options,
+  optionsResetBlockTypes,
+} from './SlateCustomElements/initialValues'
 
-import { toggleCodeBlock, toggleBoldMark } from '../../helpers/KeybindHelper'
-import { DefaultElement, CodeElement, Leaf } from './SlateCustomElements/CustomElements'
+import { autoformatRules } from "./SlateCustomElements/autoformatRules";
 
-const plugins = [ParagraphPlugin(), BoldPlugin(), ItalicPlugin(), UnderlinePlugin()];
-const withPlugins = [withReact, withHistory]
+const plugins = [
+  ParagraphPlugin(options),
+  BoldPlugin(),
+  ItalicPlugin(),
+  CodePlugin(),
+  StrikethroughPlugin(),
+  BlockquotePlugin(options),
+  ListPlugin(options),
+  HeadingPlugin(options),
+  CodeBlockPlugin(options),
+  ResetBlockTypePlugin(optionsResetBlockTypes),
+  SoftBreakPlugin({
+    rules: [
+      { hotkey: 'shift+enter' },
+      {
+        hotkey: 'enter',
+        query: {
+          allow: [ options.code_block.type, options.blockquote.type],
+        },
+      },
+    ],
+  }),
+  ExitBreakPlugin({
+    rules: [
+      {
+        hotkey: 'mod+enter',
+      },
+      {
+        hotkey: 'mod+shift+enter',
+        before: true,
+      },
+      {
+        hotkey: 'enter',
+        query: {
+          start: true,
+          end: true,
+          allow: headingTypes,
+        },
+      },
+    ],
+  }),
+]
+
+const withPlugins = [
+  withReact,
+  withHistory,
+  withList(options),
+  withToggleType({ defaultType: options.p.type }),
+  withTransforms(),
+  // withTrailingNode({ type: options.p.type }),
+  withAutoformat({
+    rules: autoformatRules,
+  }),]
 
 
 export function SlateEditor() {
@@ -27,22 +95,9 @@ export function SlateEditor() {
     },
     {
       type: 'code',
-      children: [{ text: 'const a = {text: "text"}'}]
+      children: [{ text: 'const a = {text: "text"}' }]
     }
   ])
-
-
-  const renderElement = useCallback(props => {
-    switch (props.element.type) {
-      case 'code':
-        return <CodeElement {...props} />
-      default:
-        return <DefaultElement {...props} />
-    }
-  }, [])
-  const renderLeaf = useCallback(props => {
-    return <Leaf {...props} />
-  }, [])
 
   return (
     <Slate editor={editor} value={value} onChange={newValue => setValue(newValue)}>

@@ -1,4 +1,4 @@
-import { Editor, Transforms, Text } from 'slate'
+import { Editor, Location, Transforms, Text } from 'slate'
 
 export function isBoldMarkActive(editor) {
   const [match] = Editor.nodes(editor, {
@@ -26,11 +26,11 @@ export function toggleBoldMark(editor) {
   )
 }
 
-export function toggleCodeBlock(editor) {
+export function toggleCodeBlock(editor, type, at) {
   const isActive = isCodeBlockActive(editor)
   Transforms.setNodes(
     editor,
-    { type: isActive ? null : 'code' },
+    { type },
     { match: n => Editor.isBlock(editor, n)}
   )
 }
