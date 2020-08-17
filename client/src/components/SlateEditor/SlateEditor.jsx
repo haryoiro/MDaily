@@ -1,9 +1,25 @@
-import React, { useEffect, useMemo, useState, useCallback } from "react";
-import { createEditor, Editor, Transforms } from 'slate'
+import React, { useMemo, useState, useCallback } from "react";
+import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
+import { withHistory } from 'slate-history'
+import {
+  ParagraphPlugin,
+  BoldPlugin,
+  EditablePlugins,
+  ItalicPlugin,
+  UnderlinePlugin,
+  pipe
+} from '@udecode/slate-plugins'
+
+import { toggleCodeBlock, toggleBoldMark } from '../../helpers/KeybindHelper'
+import { DefaultElement, CodeElement, Leaf } from './SlateCustomElements/CustomElements'
+
+const plugins = [ParagraphPlugin(), BoldPlugin(), ItalicPlugin(), UnderlinePlugin()];
+const withPlugins = [withReact, withHistory]
+
 
 export function SlateEditor() {
-  const editor = useMemo(() => withReact(createEditor()), [])
+  const editor = useMemo(() => pipe(createEditor(), ...withPlugins), [])
   const [value, setValue] = useState([
     {
       type: 'paragraph',
@@ -15,6 +31,7 @@ export function SlateEditor() {
     }
   ])
 
+
   const renderElement = useCallback(props => {
     switch (props.element.type) {
       case 'code':
@@ -22,39 +39,19 @@ export function SlateEditor() {
       default:
         return <DefaultElement {...props} />
     }
-  })
+  }, [])
+  const renderLeaf = useCallback(props => {
+    return <Leaf {...props} />
+  }, [])
 
   return (
     <Slate editor={editor} value={value} onChange={newValue => setValue(newValue)}>
-      <Editable
-        renderElement={renderElement}
-        onKeyDown={e => {
-          if (e.key === '`' && e.ctrlKey) {
-            e.preventDefault()
-            // 現在選択されているブロックが`code`ブロックであるかどうかを判断
-            const [match] = Editor.nodes(editor, {
-              match: n => n.type === 'code',
-            })
-            // ブロックタイプが'paragtaph'か'code'いずれかの場合それらを交互に切り替える
-            Transforms.setNodes(
-              editor,
-              { type: match ? 'paragraph' : 'code' },
-              { match: n => Editor.isBlock(editor, n)}
-            )
-          }
-      }}/>
+      <EditablePlugins
+        plugins={plugins}
+        placeholder="Enter some text..."
+        spellCheck
+        autoFocus
+      />
     </Slate>
   )
-}
-
-function CodeElement({attributes, children}) {
-  return (
-    <pre {...attributes}>
-      <code>{children}</code>
-    </pre>
-  )
-}
-
-function DefaultElement({attributes, children}) {
-return <p {...attributes}>{children}</p>
 }
