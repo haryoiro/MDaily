@@ -1,3 +1,4 @@
+import { Transforms } from 'slate'
 import {
   MARK_BOLD,
   MARK_CODE,
@@ -7,7 +8,7 @@ import {
   unwrapList,
 } from '@udecode/slate-plugins';
 import { options } from './initialValues';
-import { toggleCodeBlock } from '../helpers/KeybindHelper.js'
+
 const preFormat = (editor) => unwrapList(editor, options);
 
 export const autoformatRules= [
@@ -102,7 +103,7 @@ export const autoformatRules= [
     trigger: '`',
     type: options.code_block.type,
     markup: '``',
-    mode: 'inline-block',
+    mode: 'block',
     preFormat,
   },
 ];

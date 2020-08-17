@@ -39,7 +39,9 @@
     "slate": "^0.58.4",
     "slate-history": "^0.58.4",
     "slate-hyperscript": "^0.58.4",
-    "slate-react": "^0.58.4"
+    "slate-react": "^0.58.4",
+    "slate-soft-break": "^0.9.0",
+    "slate-when": "^0.2.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

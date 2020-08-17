@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { MainEditor } from './components/MainEditor/MainEditor.js'
 import { SlateEditor } from './components/SlateEditor/SlateEditor'
 import './App.css'
 import './components/MainEditor/styles/megadraft/megadraft.scss'

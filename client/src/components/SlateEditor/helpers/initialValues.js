@@ -27,6 +27,10 @@ import {
   ELEMENT_H6,
   isBlockAboveEmpty,
   isSelectionAtBlockStart,
+  MARK_BOLD,
+  MARK_CODE,
+  MARK_ITALIC,
+  MARK_STRIKETHROUGH,
 } from '@udecode/slate-plugins';
 
 export const headingTypes = [
@@ -60,6 +64,10 @@ export const options = {
   ...DEFAULTS_SUBSUPSCRIPT,
   ...DEFAULTS_HIGHLIGHT,
   ...DEFAULTS_SEARCH_HIGHLIGHT,
+  ...MARK_BOLD,
+  ...MARK_CODE,
+  ...MARK_ITALIC,
+  ...MARK_STRIKETHROUGH,
 };
 
 const resetBlockTypesCommonRule = {

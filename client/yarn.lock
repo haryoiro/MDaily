@@ -11193,6 +11193,16 @@ slate-react@^0.58.4:
     lodash "^4.17.4"
     scroll-into-view-if-needed "^2.2.20"
 
+slate-soft-break@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/slate-soft-break/-/slate-soft-break-0.9.0.tgz#7fb2a22eb8600717ee299f7866469cb9c705a53d"
+  integrity sha512-iTy2bl/G+tphN10YQBOPDRxDqgM46ZH1UUz0ublmL6PLtwJ3jJK1n08w37YxnY/ge4aW31UN386KV6qvFx6Hsw==
+
+slate-when@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/slate-when/-/slate-when-0.2.0.tgz#5859fb67149270f471dd86a3a85516d0e4f85c35"
+  integrity sha512-FtM9N1lrgWSlo4YHME6p2EnNlcDFbn0W8INvq0e4ithbvOZgFwqwrVWbgaFeGTntcEi934Lz8nqLwcVvxDt/zQ==
+
 slate@^0.58.4:
   version "0.58.4"
   resolved "https://registry.yarnpkg.com/slate/-/slate-0.58.4.tgz#4259387e632b45b00cf88bcecf5570d7d16ddd8b"
