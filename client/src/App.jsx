@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { MainEditor } from './components/MainEditor/MainEditor.js'
+import { SlateEditor } from './components/SlateEditor/SlateEditor'
 import './App.css'
+import './components/MainEditor/styles/megadraft/megadraft.scss'
 // import { Notification } from './components/Notification/Notification'
 
 
@@ -10,6 +12,9 @@ import './App.css'
 
 export default function App() {
   return (
-    <MainEditor />
+    <>
+      <MainEditor />
+      <SlateEditor />
+    </>
   )
 }

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
 import { MegadraftEditor, editorStateFromRaw } from "megadraft";
 
-import 'megadraft/dist/css/megadraft.css'
 
 export function MainEditor() {
   const [eState, setEState] = useState({editorState: editorStateFromRaw(null)})
@@ -16,7 +14,10 @@ export function MainEditor() {
       <MegadraftEditor
         editorState={eState.editorState}
         onChange={editorState => handleChange(editorState)}
-        placeholder='Add some text' />
+        placeholder='Add some text'
+        />
     </div>
   )
 }
+
+
