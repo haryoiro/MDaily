@@ -1,23 +1,15 @@
-import React from 'react'
-import { Note } from './components/NoteList/Note'
-import { Notification } from './components/Notification/Notification'
-// import MarkdownBox from './components/TodoList/MarkdownBox'
+import React, { useState, useEffect } from 'react'
+import { MainEditor } from './components/MainEditor/MainEditor.js'
+import './App.css'
+// import { Notification } from './components/Notification/Notification'
 
-import { ReactQueryDevtools } from 'react-query-devtools'
 
-// https://vivliostyle.github.io/vivliostyle_doc/ja/vivliostyle-user-group-vol2/spring-raining/index.html
+// Draft.js plugins
+// yarn remove draft-js-plugins-editor draft-js-static-toolbar-plugin draft-js-markdown-shortcuts-plugin draft-js-inline-toolbar-plugin draft-js-anchor-plugin draft-js-linkify-plugin
+// import { ReactQueryDevtools } from 'react-query-devtools'
 
 export default function App() {
   return (
-    <div>
-      { // Development Only
-        (process.env.NODE_ENV === 'development') &&
-        <ReactQueryDevtools />
-      }
-      <header>
-        <Notification />
-      </header>
-      <Note />
-    </div>
+    <MainEditor />
   )
 }
