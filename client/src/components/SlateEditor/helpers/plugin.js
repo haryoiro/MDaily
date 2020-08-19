@@ -1,6 +1,6 @@
 import { withHistory } from 'slate-history'
 import { withReact } from 'slate-react'
-
+import withShortcuts from './withShortcut'
 import {
   ParagraphPlugin,
   BoldPlugin,
@@ -17,9 +17,12 @@ import {
   ExitBreakPlugin,
   withAutoformat,
   withList,
+  withMarks,
   withToggleType,
   withTransforms,
-  withInlineVoid,
+  withNormalizeTypes,
+
+  // withInlineVoid,
 } from '@udecode/slate-plugins'
 
 import {
@@ -41,16 +44,30 @@ export const plugins = [
   HeadingPlugin(options),
   CodeBlockPlugin(options),
   ResetBlockTypePlugin(optionsResetBlockTypes),
-  SoftBreakPlugin(options),
-  ExitBreakPlugin(options),
+  SoftBreakPlugin(options,{
+      rules: [
+        { hotkey: 'shift+enter' },
+        {
+          hotkey: 'enter',
+          query: {
+            allow: [options.code_block.type, options.blockquote.type],
+          },
+        },
+      ],
+    })
 ]
 
 export const withPlugins = [
   withReact,
   withHistory,
-  withList(options),
-  withToggleType({ defaultType: options.p.type }),
+  // withToggleType({ defaultType: options.p.type }),
   withTransforms(),
-  withAutoformat({ rules: autoformatRules }),
-  withInlineVoid({ plugins })
+  // withAutoformat({ rules: autoformatRules }),
+  withList(options),
+  withMarks(),
+  withNormalizeTypes({
+    rules: [{ path: [0, 0], strictType: options.h1.type }],
+  }),
+  withShortcuts(options),
+  // withInlineVoid({ plugins })
 ]
