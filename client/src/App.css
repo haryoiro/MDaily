@@ -67,3 +67,6 @@
       transform: scale(1.125); }
   .sidemenu__item {
     height: 40px; }
+
+.editor {
+  padding: 6px; }

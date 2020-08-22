@@ -1,7 +1,5 @@
-import React, { useState, useCallback, useMemo } from 'react'
-import { Slate, Editable, withReact } from 'slate-react'
-import { Editor, Transforms, Range, Point, createEditor } from 'slate'
-import { withHistory } from 'slate-history'
+import React from 'react'
+import { Editor, Transforms, Range, Point } from 'slate'
 
 const SHORTCUTS = {
   '*': 'list-item',
@@ -14,25 +12,27 @@ const SHORTCUTS = {
   '####': 'heading-four',
   '#####': 'heading-five',
   '######': 'heading-six',
+  '': 'new-line',
+  '```': 'code'
 }
 
-const withShortcuts = editor => {
+export const withShortcuts = editor => {
   const { deleteBackward, insertText } = editor
 
   editor.insertText = text => {
     const { selection } = editor
 
+
     if (text === ' ' && selection && Range.isCollapsed(selection)) {
       const { anchor } = selection
       const block = Editor.above(editor, {
-        match: n => Editor.isBlock(editor, n),
+        match: n => Editor.isBlock(editor, n)
       })
       const path = block ? block[1] : []
       const start = Editor.start(editor, path)
       const range = { anchor, focus: start }
       const beforeText = Editor.string(editor, range)
       const type = SHORTCUTS[beforeText]
-
       if (type) {
         Transforms.select(editor, range)
         Transforms.delete(editor)
@@ -41,6 +41,13 @@ const withShortcuts = editor => {
           { type },
           { match: n => Editor.isBlock(editor, n) }
         )
+        if (type === undefined) {
+          Transforms.setNodes(
+            editor,
+            { type: 'new-line' },
+            { match: n => Editor.isBlock(editor, n) }
+          )
+        }
 
         if (type === 'list-item') {
           const list = { type: 'bulleted-list', children: [] }
@@ -74,7 +81,7 @@ const withShortcuts = editor => {
         ) {
           Transforms.setNodes(editor, { type: 'paragraph' })
 
-          if (block.type === 'list-item') {
+          if (block.type === 'list-items') {
             Transforms.unwrapNodes(editor, {
               match: n => n.type === 'bulleted-list',
               split: true,
@@ -92,67 +99,39 @@ const withShortcuts = editor => {
   return editor
 }
 
-const Element = ({ attributes, children, element }) => {
+
+export const Element = ({ attributes, children, element }) => {
   switch (element.type) {
     case 'block-quote':
-      return <blockquote {...attributes}>{children}</blockquote>
+      return <blockquote className='marked-block'{...attributes}>{children}</blockquote>
     case 'bulleted-list':
-      return <ul {...attributes}>{children}</ul>
+      return <ul className='marked-bulleted'{...attributes}>{children}</ul>
     case 'heading-one':
-      return <h1 {...attributes}>{children}</h1>
+      return <h1 className='marked-h1'{...attributes}>{children}</h1>
     case 'heading-two':
-      return <h2 {...attributes}>{children}</h2>
+      return <h2 className='marked-h2'{...attributes}>{children}</h2>
     case 'heading-three':
-      return <h3 {...attributes}>{children}</h3>
+      return <h3 className='marked-h3'{...attributes}>{children}</h3>
     case 'heading-four':
-      return <h4 {...attributes}>{children}</h4>
+      return <h4 className='marked-h4'{...attributes}>{children}</h4>
     case 'heading-five':
-      return <h5 {...attributes}>{children}</h5>
+      return <h5 className='marked-h5'{...attributes}>{children}</h5>
     case 'heading-six':
-      return <h6 {...attributes}>{children}</h6>
+      return <h6 className='marked-h6'{...attributes}>{children}</h6>
     case 'list-item':
-      return <li {...attributes}>{children}</li>
+      return <li className='marked-li'{...attributes}>{children}</li>
+    case 'new-line':
+      return <p className='marked-p'  {...attributes}>{children}</p>
+    case 'code':
+      return <code className='marked-code' {...attributes}>{children}</code>
     default:
-      return <p {...attributes}>{children}</p>
+      return <p className='marked-p'  {...attributes}>{children}</p>
   }
 }
 
-const initialValue = [
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text:
-          'The editor gives you full control over the logic you can add. For example, it\'s fairly common to want to add markdown-like shortcuts to editors. So that, when you start a line with "> " you get a blockquote that looks like this:',
-      },
-    ],
-  },
-  {
-    type: 'block-quote',
-    children: [{ text: 'A wise quote.' }],
-  },
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text:
-          'Order when you start a line with "## " you get a level-two heading, like this:',
-      },
-    ],
-  },
-  {
-    type: 'heading-two',
-    children: [{ text: 'Try it out!' }],
-  },
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text:
-          'Try it out for yourself! Try starting a new line with ">", "-", or "#"s.',
-      },
-    ],
-  },
-]
 
-export default { withShortcuts }
+function log(obj) {
+  for (let i in obj) {
+    console.log(i, '\t\t\t|', obj[i])
+  }
+}

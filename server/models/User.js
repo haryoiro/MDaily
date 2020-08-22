@@ -24,7 +24,7 @@ const userSchema = Schema({
     ref: 'Role',
     default: [],
   }],
-  notes: [{
+  boards: [{
     type: Types.ObjectId,
     ref: 'Board',
     default: [],

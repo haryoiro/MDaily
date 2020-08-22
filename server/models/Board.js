@@ -5,11 +5,11 @@ const boardSchema = new Schema(
   {
     title: {
       type: String,
-      default: 'No Title',
+      default: 'Unnamed',
     },
-    lines: {
-      type: [String],
-      default: '',
+    contents: {
+      type: Schema.Types.Mixed,
+
     },
     user: {
       type: Types.ObjectId,
