@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { asyncNotification } from '../Notification/notificationSlice'
 
 export function NewBoard() {
-  const history = useHistory();
+  const history = useHistory()
   const dispatch = useDispatch()
   const [createNote] = useMutation(createNew, {
     onSuccess: async (data) => {
