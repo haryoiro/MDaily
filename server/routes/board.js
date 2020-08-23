@@ -21,7 +21,7 @@ boardRouter.post('/', async (req, res) => {
   const initialContent = {
     title: today,
     contents: {
-      text: '[{"type":"paragraph","children":[{"text":"A line of text in a paragraph."}]},{"type":"heading-one","children":[{"text":"dfsdfsdf"}]},{"type":"heading-two","children":[{"text":"asfsdf"}]},{"type":"new-line","children":[{"text":"sdfs"}]}]',
+      text: '[{"type":"paragraph","children":[{"text":""}]},{"type":"new-line","children":[{"text":""}]}]',
     },
   }
 
