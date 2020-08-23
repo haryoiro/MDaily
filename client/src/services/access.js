@@ -13,11 +13,6 @@ export async function getAll() {
   return res.data
 }
 
-export async function createData(newNote) {
-  const res = await axios.post(NOTE_URI, newNote)
-  return res.data
-}
-
 export async function getDataById(key, id) {
   const res = await axios.get(`${NOTE_URI}/${id.id}`)
   return res.data
@@ -27,3 +22,8 @@ export async function updateDataById(content) {
   const res = await axios.put(`${NOTE_URI}/${content[0]}`, { text: content[1], title: content[2]})
   return res.data
 } 
+
+export async function createNew() {
+  const res = await axios.post(NOTE_URI)
+  return res.data
+}
