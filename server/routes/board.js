@@ -14,10 +14,11 @@ boardRouter.post('/', async (req, res) => {
   //   return res.status(400)
   // }
 
-  // if (await Board.exists({ title })) {
-  //   // board: MESSAGE
-  //   return res.status(409)
-  // }
+  if (await Board.exists({ title: today })) {
+    // board: MESSAGE
+    return res.status(409)
+  }
+
   const initialContent = {
     title: today,
     contents: {
@@ -50,13 +51,16 @@ boardRouter.get('/:id', async (req, res) => {
 boardRouter.put('/:id', async (req, res) => {
   const { body } = req
   const { id } = req.params
-  console.log(body)
   if (!body) {
     return res.status(204)
   }
   const board = await Board.findById(id)
-  board.contents.text = body.text
-  board.title = body.title
+  if (body.text) {
+    board.contents.text = body.text
+  }
+  if (body.title) {
+    board.title = body.title
+  }
   board.save()
 
   // board: 404ステータス

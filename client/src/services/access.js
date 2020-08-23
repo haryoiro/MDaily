@@ -19,8 +19,15 @@ export async function getDataById(key, id) {
 }
 
 export async function updateDataById(content) {
-  const res = await axios.put(`${NOTE_URI}/${content[0]}`, { text: content[1], title: content[2]})
-  return res.data
+  const { title, text } = content
+  if (title) {
+    const res = await axios.put(`${NOTE_URI}/${content.currentId}`, { title })
+    return res.data
+  }
+  if (text) {
+    const res = await axios.put(`${NOTE_URI}/${content.currentId}`, { text })
+    return res.data
+  }
 } 
 
 export async function createNew() {
