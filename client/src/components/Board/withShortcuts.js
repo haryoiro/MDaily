@@ -41,13 +41,13 @@ export const withShortcuts = editor => {
           { type },
           { match: n => Editor.isBlock(editor, n) }
         )
-        if (type === undefined) {
-          Transforms.setNodes(
-            editor,
-            { type: 'new-line' },
-            { match: n => Editor.isBlock(editor, n) }
-          )
-        }
+        // if (type === undefined) {
+        //   Transforms.setNodes(
+        //     editor,
+        //     { type: 'new-line' },
+        //     { match: n => Editor.isBlock(editor, n) }
+        //   )
+        // }
 
         if (type === 'list-item') {
           const list = { type: 'bulleted-list', children: [] }
