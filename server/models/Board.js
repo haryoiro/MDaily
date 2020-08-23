@@ -5,7 +5,6 @@ const boardSchema = new Schema(
   {
     title: {
       type: String,
-      default: 'Unnamed',
     },
     contents: {
       type: Schema.Types.Mixed,
