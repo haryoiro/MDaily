@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { Slate, Editable, withReact } from 'slate-react'
-import { Editor, Transforms, createEditor } from 'slate'
+import { createEditor } from 'slate'
 import { withHistory } from 'slate-history'
 import { useQuery, useMutation, queryCache } from 'react-query'
-import { getDataById, updateDataById } from '../../services/access'
 import { useParams } from 'react-router-dom'
-import { withShortcuts, Element } from './withShortcuts'
 import { useDispatch } from 'react-redux'
+import { getDataById, updateDataById } from '../../services/access'
+import { withShortcuts } from './withShortcuts'
 import { asyncNotification } from '../Notification/notificationSlice'
+import { MarkedElements } from './MarkedElements'
 
-const Board = () => {
+export const Board = () => {
   const { id } = useParams()
-  const [text, setText, setSendTitle, saveText] = useAutoSave(id)
-  const [content, setContent] = useState([{ type: 'paragraph', children: [{ text: 'A line of text in a paragraph.' }] }])
-  const [title, setTitle] = useState([{ type: 'heading-one', children: [{ text: 'UNTITLED' }] }])
+  const [setText, setSendTitle, saveText] = useAutoSave(id)
+  const [content, setContent] = useState([{ type: 'paragraph', children: [{ text: '' }] }])
+  const [title, setTitle] = useState([{ type: 'heading-one', children: [{ text: '' }] }])
   const { isLoading, isError, data, error } = useQuery(['board', { id }], getDataById)
-  const renderElement = useCallback(props => <Element {...props} />, [])
+  const renderElement = useCallback(props => <MarkedElements {...props} />, [])
   const editor = useMemo(() => withShortcuts(withReact(withHistory(createEditor()))), [])
   const titleEditor = useMemo(() => withReact(withHistory(createEditor())), [])
 
@@ -24,15 +25,18 @@ const Board = () => {
       const parsedBodyText = JSON.parse(data.contents.text)
       setContent(parsedBodyText)
       setTitle([{ type: 'heading-one', children: [{ text: data.title }] }])
+      setSendTitle(data.title)
     }
   }, [data])
 
   if (isLoading) return <div>NOW LOADING...</div>
   if (isError) return <div>{error.message}</div>
+
   function onTitleChange(value) {
     setTitle(value)
-    if (value[0].children[0].text === '') { setSendTitle('UNTITLED') }
-    setSendTitle(value[0].children[0].text)
+    const titleText = value[0].children[0].text
+    if (titleText === '') { setSendTitle('UNTITLED') }
+    setSendTitle(titleText)
   }
 
   return (
@@ -40,11 +44,13 @@ const Board = () => {
       <Slate editor={titleEditor} value={title} onChange={onTitleChange}>
         <Editable renderElement={renderElement} onKeyDown={e => {
           if (e.key === 'Enter') { e.preventDefault() }
-          if (e.key === 's' && ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) ) {
+          if ((e.key === 's') && ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey))) {
             e.preventDefault()
             saveText()
           }
-        }} />
+        }}
+          placeholder="Write Some Title"
+        />
       </Slate>
       <Slate editor={editor} value={content} onChange={value => {
         setContent(value)
@@ -55,13 +61,19 @@ const Board = () => {
           placeholder="Write some markdown..."
           autoFocus
           className="editor"
+          onKeyDown={e => {
+            if (e.key === 's' && ( (e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey) )) {
+              e.preventDefault()
+              saveText()
+            }
+          }}
         />
       </Slate>
     </>
   )
+
 }
 
-export { Board }
 
 function useAutoSave(currentId) {
   const dispatch = useDispatch()
@@ -79,7 +91,7 @@ function useAutoSave(currentId) {
     }
   })
   useEffect(() => {
-    if (text !== lastText) {
+    if ((text !== lastText) || (title !== lastTitle)) {
       const timer = setTimeout(async () => {
         await updateContent([currentId, text, title])
         setLastText(text)
@@ -87,7 +99,7 @@ function useAutoSave(currentId) {
       }, AUTO_SAVE_INTERVAL)
       return () => clearTimeout(timer)
     }
-  }, [text, title])
+  }, [text, title, lastText, currentId, lastTitle, updateContent])
   const AUTO_SAVE_INTERVAL = 10000
 
   async function saveText() {
@@ -95,7 +107,6 @@ function useAutoSave(currentId) {
   }
 
   return [
-    text,
     setText,
     setTitle,
     saveText,
