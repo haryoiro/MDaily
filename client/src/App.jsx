@@ -1,23 +1,31 @@
 import React from 'react'
-import { Note } from './components/NoteList/Note'
-import { Notification } from './components/Notification/Notification'
-// import MarkdownBox from './components/TodoList/MarkdownBox'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom'
+// import { Notification } from './components/Notification/Notification'
+import { BoardList } from './components/Board/BoardList'
+import { Board } from './components/Board/Board'
+import { NewBoard } from './components/Board/NewBoard'
+import { Header } from './components/Header/Header'
 
-import { ReactQueryDevtools } from 'react-query-devtools'
-
-// https://vivliostyle.github.io/vivliostyle_doc/ja/vivliostyle-user-group-vol2/spring-raining/index.html
 
 export default function App() {
   return (
-    <div>
-      { // Development Only
-        (process.env.NODE_ENV === 'development') &&
-        <ReactQueryDevtools />
-      }
-      <header>
-        <Notification />
-      </header>
-      <Note />
-    </div>
+    <Router>
+      <div className="header-wrapper">
+        <Header />
+        <NewBoard />
+      </div>
+      <Switch>
+        <Route exact path="/board">
+          <BoardList />
+        </Route>
+        <Route path="/board/:id">
+          <Board />
+        </Route>
+      </Switch>
+    </Router>
   )
 }
