@@ -20,6 +20,7 @@
     "axios": "^0.19.2",
     "cra-sass": "^0.0.5",
     "node-sass-chokidar": "^1.5.0",
+    "prismjs": "^1.21.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-draft-wysiwyg": "^1.14.5",
