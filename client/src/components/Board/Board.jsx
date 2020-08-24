@@ -9,8 +9,7 @@ import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
 import { withShortcuts } from './withShortcuts'
 // Elements
-import { MarkedElements } from './MarkedElements'
-import { Leaf } from './Leaf'
+import { MarkedElements, LeafElements } from './MarkdownElements'
 
 import { useAutoSave } from '../../hooks/useAutoSave'
 
@@ -29,7 +28,7 @@ export const Board = ({ datas, refetch }) => {
   const [currentTitle, setCurrentTitle] = useState(generateSlateNode('heading-one'))
 
   const renderElement = useCallback(props => <MarkedElements {...props} />, [])
-  const renderLeaf = useCallback(props => <Leaf {...props} />, [])
+  const renderLeaf = useCallback(props => <LeafElements {...props} />, [])
   // Settings for a Slate Editor
   const editor = useMemo(() => withShortcuts(withReact(withHistory(createEditor()))), [])
   const titleEditor = useMemo(() => withReact(withHistory(createEditor())), [])
