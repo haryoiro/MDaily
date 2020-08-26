@@ -20,7 +20,8 @@ const app = express()
 
 /* MONGODB */
 log.info('================================================')
-log.action(`[mongo] CONNECTING TO ${MONGODB_URI}`)
+// log.action(`[mongo] CONNECTING TO ${MONGODB_URI}`)
+log.action('[mongo] CONNECTING TO DATABASE')
 log.info('================================================')
 
 mongoose
