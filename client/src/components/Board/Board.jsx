@@ -63,7 +63,7 @@ export const Board = ({ datas, refetch }) => {
   }
 
   return (
-    <>
+    <div>
       <Slate editor={titleEditor} value={currentTitle} onChange={onTitleChange}>
         <Editable renderElement={renderElement} placeholder="Write some Title" onKeyDown={e => {
           if (e.key === 's' && ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey))) {
@@ -87,8 +87,6 @@ export const Board = ({ datas, refetch }) => {
           onKeyDown={onHotKey}
         />
       </Slate>
-    </>
+    </div>
   )
-
 }
-
