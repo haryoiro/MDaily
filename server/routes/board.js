@@ -52,17 +52,15 @@ boardRouter.put('/:id', async (req, res) => {
   const { body } = req
   const { id } = req.params
   if (!body) {
-    return res.status(204)
+    return res.status(400)
   }
   const board = await Board.findById(id)
-  if (body.text) {
-    board.contents.text = body.text
+  if (!board) {
+    return res.status(404)
   }
-  if (body.title) {
-    board.title = body.title
-  }
-  board.save()
+  board.contents.text = body.text
 
+  board.save()
   // board: 404ステータス
   return res.status(204).json(board.toJSON())
 })

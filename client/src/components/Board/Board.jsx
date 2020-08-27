@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
+import { useQuery } from 'react-query'
 // API Access
-import { updateDataById } from '../../services/access'
+import { updateDataById, getDataById } from '../../services/access'
 // Slate
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
@@ -10,72 +11,54 @@ import { withHistory } from 'slate-history'
 import { withShortcuts } from './withShortcuts'
 // Elements
 import { MarkedElements, LeafElements } from './MarkdownElements'
-
+import { markdownDecorator } from './markdownDecorator'
 import { useAutoSave } from '../../hooks/useAutoSave'
 
 function generateSlateNode(type, text = '') {
   return [{ type, children: [{ text }] }]
 }
 
-export const Board = ({ datas, refetch }) => {
+const Board = () => {
   const { id } = useParams()
-  const data = datas.find(n => n.id === id)
+  const { isLoading, isError, data, error }
+    = useQuery(['board', { id }], getDataById)
+
   // AutoSaving Hooks
-  const [text, setText, saveText] = useAutoSave(updateDataById, id, 'text', refetch)
-  const [title, setTitle, saveTitle] = useAutoSave(updateDataById, id, 'title', refetch)
+  const [text, setText, saveText] = useAutoSave(id)
   // Editor Initialize
   const [currentText, setCurrentText] = useState(generateSlateNode('paragraph'))
-  const [currentTitle, setCurrentTitle] = useState(generateSlateNode('heading-one'))
 
   const renderElement = useCallback(props => <MarkedElements {...props} />, [])
   const renderLeaf = useCallback(props => <LeafElements {...props} />, [])
   // Settings for a Slate Editor
   const editor = useMemo(() => withShortcuts(withReact(withHistory(createEditor()))), [])
-  const titleEditor = useMemo(() => withReact(withHistory(createEditor())), [])
   const decorate = useCallback(markdownDecorator, [])
 
   useEffect(() => {
     if (data) {
-      setCurrentText(JSON.parse(data.contents.text))
-      setCurrentTitle(generateSlateNode('heading-one', data.title))
-      setTitle(data.title)
+      const parsed = JSON.parse(data.contents.text)
+      setCurrentText(parsed)
     }
   }, [data])
 
-  function onTitleChange(value) {
-    setCurrentTitle(value)
-    const titleText = value[0].children[0].text
-    setTitle(titleText)
-  }
+  if (isLoading) return <div>NOW LOADING...</div>
+  if (isError) return <div>{error.message}</div>
 
-  function onHotKey(e) {
+  async function onHotKey(e) {
     if (e.key === 's' && ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey))) {
       e.preventDefault()
       if (currentText !== text) {
-        console.log('text saved')
-        saveText()
-      }
-      if (currentTitle !== title) {
-        console.log('title saved')
-        saveTitle()
+        await saveText()
       }
     }
   }
 
   return (
     <div>
-      <Slate editor={titleEditor} value={currentTitle} onChange={onTitleChange}>
-        <Editable renderElement={renderElement} placeholder="Write some Title" onKeyDown={e => {
-          if (e.key === 's' && ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey))) {
-            e.preventDefault()
-            if (currentText !== text) saveText()
-            if (currentTitle !== title) saveTitle()
-          }
-        }} />
-      </Slate>
       <Slate editor={editor} value={currentText} onChange={v => {
         setCurrentText(v)
-        setText(JSON.stringify(v))
+        const stringig = JSON.stringify(v)
+        setText(stringig)
       }}>
         <Editable
           decorate={decorate}
@@ -90,3 +73,6 @@ export const Board = ({ datas, refetch }) => {
     </div>
   )
 }
+
+
+export default Board

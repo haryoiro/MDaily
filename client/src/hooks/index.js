@@ -2,8 +2,8 @@ import { useAutoFocus } from './useAutoFocus'
 import { useAutoSave } from './seAutoSave'
 import { useField } from './useField'
 
-export {
+export default {
   useAutoFocus,
-  useAutosave,
+  useAutoSave,
   useField,
 }

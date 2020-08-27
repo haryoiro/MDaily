@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useMutation, queryCache } from 'react-query'
+import { updateDataById, getDataById } from '../services/access'
 
 import { asyncNotification } from '../components/Notification/notificationSlice'
 
-export function useAutoSave(mutateFunction, currentId, fieldName, cb) {
+export function useAutoSave(currentId) {
   const dispatch = useDispatch()
   const [lastText, setLastText] = useState('')
   const [text, setText] = useState('')
-  const [updateContent] = useMutation(mutateFunction, {
+  const [updateContent] = useMutation(updateDataById, {
     onSuccess: async (data) => {
-      queryCache.invalidateQueries('board')
+      await queryCache.invalidateQueries('board')
+      console.log(data)
       await dispatch(asyncNotification(`CONTENT IS SAVED`))
     },
     onError: async (data, error) => {
@@ -20,18 +22,17 @@ export function useAutoSave(mutateFunction, currentId, fieldName, cb) {
   useEffect(() => {
     if (text !== lastText) {
       const timer = setTimeout(async () => {
-        await saveText()
+        await updateContent({ currentId, text })
         setLastText(text)
       }, AUTO_SAVE_INTERVAL)
       return () => clearTimeout(timer)
     }
   }, [text, lastText, currentId])
-  const AUTO_SAVE_INTERVAL = 10000
+  const AUTO_SAVE_INTERVAL = 100000
 
   async function saveText() {
     if (text) {
-      await updateContent({ currentId, [fieldName]: text })
-      cb()
+      await updateContent({ currentId, text })
     }
   }
 
