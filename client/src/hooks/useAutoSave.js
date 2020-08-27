@@ -12,7 +12,6 @@ export function useAutoSave(currentId) {
   const [updateContent] = useMutation(updateDataById, {
     onSuccess: async (data) => {
       await queryCache.invalidateQueries('board')
-      console.log(data)
       await dispatch(asyncNotification(`CONTENT IS SAVED`))
     },
     onError: async (data, error) => {
@@ -31,9 +30,7 @@ export function useAutoSave(currentId) {
   const AUTO_SAVE_INTERVAL = 100000
 
   async function saveText() {
-    if (text) {
       await updateContent({ currentId, text })
-    }
   }
 
   return [
