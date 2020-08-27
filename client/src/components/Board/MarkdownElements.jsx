@@ -48,10 +48,12 @@ export const LeafElements = ({ attributes, children, leaf }) => {
 }
 
 const Span = style.span`
+${props => props.leaf && `
   font-weight: ${props => props.leaf.bold && 'bold'};
   font-style: ${props => props.leaf.italic && 'italic'};
-  text-decoration: ${props => props.leaf.underlined && 'underline'};
-`
+  text - decoration: ${ props => props.leaf.underlined && 'underline' };
+  `
+}`
 const Code = style(Span)`
   font-family: monospace;
   background-color: #eee;
