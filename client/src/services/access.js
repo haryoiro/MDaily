@@ -18,16 +18,9 @@ export async function getDataById(key, id) {
   return res.data
 }
 
-export async function updateDataById(content) {
-  const { currentId, title, text } = content
-  if (title) {
-    const res = await axios.put(`${NOTE_URI}/${currentId}`, { title })
-    return res.data
-  }
-  if (text) {
-    const res = await axios.put(`${NOTE_URI}/${currentId}`, { text })
-    return res.data
-  }
+export async function updateDataById({ currentId, text }) {
+  const res = await axios.put(`${NOTE_URI}/${currentId}`, { text })
+  return res.data
 }
 
 export async function createNew() {
