@@ -5,8 +5,7 @@ import { useQuery } from 'react-query'
 import { getAll } from '../../services/access'
 
 function BoardList() {
-  const { isLoading, isError, data, error }
-    = useQuery('board', getAll)
+  const { isLoading, isError, data, error } = useQuery('board', getAll)
 
   if (isLoading) return <div>NOW LOADING...</div>
   if (isError) return <div>{error.message}</div>
