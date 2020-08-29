@@ -7,15 +7,23 @@ export const boardSlice = createSlice({
   },
   reducers: {
     setBoardList: (state, { payload }) => {
-      state.list = payload
+      state.board = payload
+    },
+    setBoardById: (state, { payload }) => {
+      console.log(payload)
+      console.log(state.board)
     }
   },
 })
 
-export const { setBoardList } = boardSlice.actions
+export const {
+  setBoardList,
+  setBoardById
+} = boardSlice.actions
 
 export const allBoard = () => async dispatch => {
   const list = await getAll()
+  console.log(list)
   await dispatch(setBoardList(list))
 }
 

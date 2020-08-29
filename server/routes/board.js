@@ -54,13 +54,22 @@ boardRouter.put('/:id', async (req, res) => {
   if (!body) {
     return res.status(400)
   }
-  const board = await Board.findOneAndUpdate(id, {
-    contents: {
-      text: body.text,
+  console.log(id)
+  const board = await Board.findOneAndUpdate(
+    { _id: id },
+    {
+      $set: {
+        contents: {
+          text: body.text,
+        },
+      },
     },
-  })
+  )
+  // mongooseの使用上、save()関数を実行しないと__vが加算されないので
+  // この行は残しておくこと。
+  // issue: https://github.com/Automattic/mongoose/issues/6994
+  // プラグインによっての解決も可能。
   await board.save()
-
   // board: 404ステータス
   return res.status(204).json(board.toJSON())
 })

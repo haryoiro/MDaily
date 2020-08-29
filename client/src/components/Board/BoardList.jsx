@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components'
-import { FlexGrid, Link } from '../shared'
+import { Grid, Link } from '../shared'
 import { useQuery } from 'react-query'
+import { useDispatch } from 'react-redux'
+import { allBoard } from './boardSlice'
 import { getAll } from '../../services/access'
+import { Slider } from '../shared/Slider'
+import { Header } from '../../components/'
 
 function BoardList() {
-  const { isLoading, isError, data, error } = useQuery('board', getAll)
-
+  const dispatch = useDispatch()
+  const { isLoading, isError, data, error } = useQuery('board', () => getAll())
+  const [sliderValue, setSliderValue] = useState(0)
+  
   if (isLoading) return <div>NOW LOADING...</div>
   if (isError) return <div>{error.message}</div>
 
@@ -15,25 +21,33 @@ function BoardList() {
       .map(b => b.children[0].text)
       .join('\n')
   }
-
+  
   return (
-    <BoardRow>
-      {data.map(a =>
-        <BoardLink to={`/board/${a.id}`} key={a.id}>
-          <Item key={a.id}>
-            <BoardTitle>{a.title ? a.title : 'untitled'}</BoardTitle>
-            <BoardBody>{parseTextFromSlate(a)} </BoardBody>
-          </Item>
-        </BoardLink>
-      )}
-    </BoardRow>
+    <>
+      <Header />
+      <BoardLayout index={sliderValue}>
+        {data.map(a =>
+          <ItemWrapper key={a.id}>
+            <BoardItem to={`/board/${a.id}`} key={a.id}>
+              <BoardHeader>{a.title}</BoardHeader>
+              <BoardBody>{parseTextFromSlate(a)}</BoardBody>
+            </BoardItem>
+          </ItemWrapper>
+        )}
+      </BoardLayout>
+      <Slider
+        value={sliderValue}
+        onChange={(e) => setSliderValue(e.target.value)}
+      />
+    </>
   )
 }
 
-const BoardTitle = styled.div`
+const BoardHeader = styled.div`
 margin: 1rem;
+margin-top: 0.5rem;
 color: ${({ theme }) => theme.fg1};
-font-size: 23px;
+font-size: 18px;
 font-weight: medium;
 `
 const BoardBody = styled.div`
@@ -41,30 +55,50 @@ margin: 1rem;
 color: ${({ theme }) => theme.fg2};
 font-size: 14px;
 `
-const BoardLink = styled(Link)`
+const BoardItem = styled(Link)`
+text-align: left;
+margin-left: -2px;
+&:hover {
+  background: none;
+}
+`
+const ItemWrapper = styled.div`
+display: flex;
 color: ${({ theme }) => theme.fg1};
 background: ${({ theme }) => theme.bg2};
-text-align: left;
-height: 200px;
-width: 100px;
-min-width: 340px;
-margin: 5px;
-border-radius: 10px;
+border-radius: 5px;
+max-width: 260px;
 `
+const BoardLayout = ({ index, children }) => {
+  const layout = [{
+    x: '157px',
+    y: '180px',
+  }, {
+    x: '180px',
+    y: '210px',
+  }, {
+    x: '220px',
+    y: '260px',
+  }]
 
+  return (
+    <BoardRow x={layout[index].x} y={layout[index].y}>
+      {children}
+    </BoardRow>
+  )
+}
 
-const Item = styled(FlexGrid.Col)`
-`
-
-const BoardRow = styled(FlexGrid.Row)`
-display: inline-flex;
-position: relative;
-flex-flow: row wrap;
-justify-content: center;
+const BoardRow = styled.div`
+display: grid;
+grid-area: "content";
+grid-column: 2;
+grid-auto-rows: ${({ y }) => y};
+grid-template-columns: repeat(auto-fit, minmax(${({ x }) => x}, 1fr));
+gap: 15px;
 overflow-y: scroll;
+padding: 10px 20px;
+margin: 0px 60px 0px 60px;
 height: 100vh;
-margin-left: 90px;
-max-width: 1100px;
 `
 
 export default BoardList
