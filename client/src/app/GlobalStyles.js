@@ -15,10 +15,19 @@ export const GlobalStyles = createGlobalStyle`
     align-items: center;
     background: ${({ theme }) => theme.bg1};
     color: ${({ theme }) => theme.fg1};
-    display: flex;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    height: 100vh;
-    justify-content: center;
     text-rendering: optimizeLegibility;
+    justify-content: center;
+  }
+  #root {
+    display: grid;
+    height: 100vh;
+    width: 1fr;
+    grid-template-columns: 60px 1fr;
+    grid-template-rows: 128px 1fr;
+    grid-template-areas:
+    "sidebar header"
+    "sidebar content"
+    "sidebar footer";
   }
   `
