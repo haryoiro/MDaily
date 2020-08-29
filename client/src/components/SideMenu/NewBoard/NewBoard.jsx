@@ -27,14 +27,14 @@ function NewBoard() {
 
   return (
     <StyledNewBoard onClick={onCreateNew}>
-      <Icons.Plus />
+      <Icons.PlusIcon />
     </StyledNewBoard>
   )
 }
 
 const StyledNewBoard = styled.button`
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   border: none;
   border-radius: 50%;
   padding: 0 0;

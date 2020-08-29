@@ -10,18 +10,13 @@ const SideMenu = ({children}) => {
 }
 
 const StyledSideMenu = styled.nav`
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  justify-content: top;
+  display: grid;
+  grid-area: "sidebar";
   background: ${({ theme }) => theme.bg2};
   height: 100vh;
-  width: 90px;
-  text-align: left;
-  padding: 24px;
-  padding-top: 48px;
-  left: 0;
-  top: 0;
+  width: 60px;
+  padding: 12px;
+  padding-top: 16px;
   transition: transform 0.3s ease-in-out;
 
   &:hover {
