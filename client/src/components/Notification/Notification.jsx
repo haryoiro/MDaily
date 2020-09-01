@@ -1,14 +1,29 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  selectNotification,
-} from './notificationSlice'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import styled from 'styled-components'
+import { selectNotification } from './notificationSlice'
 
 function Notification() {
   const message = useSelector(selectNotification)
+
   return (
-    <p>{message}</p>
+    <Center>
+      <StyledNotification>{message}</StyledNotification>
+    </Center>
   )
 }
+
+const StyledNotification = styled.div`
+justify-content: center;
+margin-left: auto;
+margin-right: auto;
+`
+const Center = styled.div`
+display: flex;
+position: absolute;
+width: 100vw;
+left: 0;
+top: 0;
+`
 
 export default Notification
