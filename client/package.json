@@ -6,7 +6,9 @@
     "startn": "BROWSER=\"Firefox Nightly\" react-scripts start",
     "start": " react-scripts start",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint ./src/**",
+    "fix": "yarn lint --fix"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.1.0",
@@ -15,6 +17,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "prismjs": "^1.21.0",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-editor-js": "^1.6.2",
@@ -26,6 +29,7 @@
     "redux": "^4.0.5",
     "slate": "^0.58.4",
     "slate-history": "^0.58.4",
+    "slate-plain-serializer": "^0.7.13",
     "slate-react": "^0.58.4",
     "styled-components": "^5.1.1"
   },
@@ -33,6 +37,7 @@
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.20.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.5",
     "nodemon": "^2.0.4"
