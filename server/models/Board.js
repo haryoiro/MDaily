@@ -8,7 +8,6 @@ const boardSchema = new Schema(
     },
     contents: {
       type: Schema.Types.Mixed,
-
     },
     user: {
       type: Types.ObjectId,
@@ -20,7 +19,7 @@ const boardSchema = new Schema(
       createdAt: 'created',
       updatedAt: 'updated',
     },
-  },
+  }
 )
 
 boardSchema.set('toJSON', {

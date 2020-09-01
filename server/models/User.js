@@ -1,7 +1,5 @@
 /* eslint-disable no-param-reassign, no-underscore-dangle */
-const {
-  Schema, model, Types,
-} = require('mongoose')
+const { Schema, model, Types } = require('mongoose')
 
 const userSchema = Schema({
   username: {
@@ -19,16 +17,20 @@ const userSchema = Schema({
     type: String,
     default: '',
   },
-  roles: [{
-    type: Types.ObjectId,
-    ref: 'Role',
-    default: [],
-  }],
-  boards: [{
-    type: Types.ObjectId,
-    ref: 'Board',
-    default: [],
-  }],
+  roles: [
+    {
+      type: Types.ObjectId,
+      ref: 'Role',
+      default: [],
+    },
+  ],
+  boards: [
+    {
+      type: Types.ObjectId,
+      ref: 'Board',
+      default: [],
+    },
+  ],
 })
 
 userSchema.set('toJSON', {

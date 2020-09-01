@@ -22,7 +22,8 @@ boardRouter.post('/', async (req, res) => {
   const initialContent = {
     title: today,
     contents: {
-      text: '[{"type":"paragraph","children":[{"text":""}]},{"type":"new-line","children":[{"text":""}]}]',
+      text:
+        '[{"type":"paragraph","children":[{"text":""}]},{"type":"new-line","children":[{"text":""}]}]',
     },
   }
 
@@ -63,7 +64,7 @@ boardRouter.put('/:id', async (req, res) => {
           text: body.text,
         },
       },
-    },
+    }
   )
   // mongooseの使用上、save()関数を実行しないと__vが加算されないので
   // この行は残しておくこと。
