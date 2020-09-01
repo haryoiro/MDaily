@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react'
 
-export function useField(type) {
+function useField(type) {
   const [value, setValue] = useState('')
 
-  const autoComplete = "off"
+  const autoComplete = 'off'
 
   function onChange(event) {
     setValue(event.target.value)
@@ -21,5 +21,8 @@ export function useField(type) {
       value,
       onChange,
       autoComplete,
-  }}
+    },
+  }
 }
+
+export default useField

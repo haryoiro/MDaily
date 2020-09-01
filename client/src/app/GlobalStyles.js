@@ -1,7 +1,7 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components'
 import reboot from './reboot.css'
 
-export const GlobalStyles = createGlobalStyle`
+const GlobalStyles = createGlobalStyle`
   ${reboot}
   html, body {
     margin: 0;
@@ -20,14 +20,7 @@ export const GlobalStyles = createGlobalStyle`
     justify-content: center;
   }
   #root {
-    display: grid;
-    height: 100vh;
-    width: 1fr;
-    grid-template-columns: 60px 1fr;
-    grid-template-rows: 128px 1fr;
-    grid-template-areas:
-    "sidebar header"
-    "sidebar content"
-    "sidebar footer";
   }
   `
+
+export default GlobalStyles
