@@ -1,7 +1,7 @@
-import React from 'react'
-import { Transforms } from 'slate'
+/* eslint-disable no-param-reassign */
+import { Transforms, Node } from 'slate'
 
-export function withLayout(editor) {
+function withLayout(editor) {
   const { normalizeNode } = editor
 
   editor.normalizeNode = ([node, path]) => {
@@ -16,16 +16,18 @@ export function withLayout(editor) {
         Transforms.insertNodes(editor, paragraph, { at: path.concat(1) })
       }
 
-      // for (const [child, childPath] of Node.children(editor, path)) {
-      //   const type = childPath[0] === 0 ? 'title' : 'paragraph'
+      for (const [child, childPath] of Node.children(editor, path)) {
+        const type = childPath[0] === 0 ? 'title' : child.type
 
-      //   if (child.type !== type) {
-      //     Transforms.setNodes(editor, { type }, { at: childPath })
-      //   }
-      // }
+        if (child.type !== type) {
+          Transforms.setNodes(editor, { type }, { at: childPath })
+        }
+      }
     }
     return normalizeNode([node, path])
   }
 
   return editor
 }
+
+export default withLayout
