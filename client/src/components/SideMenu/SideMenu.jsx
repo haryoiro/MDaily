@@ -1,13 +1,12 @@
-import React from 'react';
+import React from 'react'
 import styled from 'styled-components'
 
-const SideMenu = ({children}) => {
-  return (
-    <StyledSideMenu>
-      {children}
-    </StyledSideMenu>
-  )
-}
+// eslint-disable-next-line react/prop-types
+const SideMenu = ({ children }) => (
+  <StyledSideMenu>
+    {children}
+  </StyledSideMenu>
+)
 
 const StyledSideMenu = styled.nav`
   display: grid;
@@ -24,4 +23,4 @@ const StyledSideMenu = styled.nav`
   }
 `
 
-export default SideMenu;
+export default SideMenu

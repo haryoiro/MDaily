@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react'
 
-export function useAutoFocus() {
+function useAutoFocus() {
   const [value, setValue] = useState(false)
   const inputRef = useRef(null)
 
@@ -9,7 +9,7 @@ export function useAutoFocus() {
     if (node) {
       node.focus()
     }
-  }, [value]);
+  }, [value])
 
   function change() {
     setValue(!value)
@@ -18,3 +18,4 @@ export function useAutoFocus() {
   return [inputRef, change]
 }
 
+export default useAutoFocus
