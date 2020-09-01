@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign, no-underscore-dangle */
 const {
-  Schema, model,
+  Schema,
+  model,
   // Types
 } = require('mongoose')
 
