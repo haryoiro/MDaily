@@ -7,7 +7,6 @@ import {
 } from 'react-router-dom'
 import {
   Notification,
-  NewBoard,
   SideMenu,
   Editor,
   BoardList,
@@ -22,7 +21,7 @@ export default function App() {
       <BodyWrapper>
         <Notification />
         <SideMenu>
-          <NewBoard />
+          {/* <NewBoard /> */}
         </SideMenu>
         <Switch>
           <Route exact path="/">

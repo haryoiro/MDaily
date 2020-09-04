@@ -1,23 +1,27 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { createNew } from '../../../services/access'
 import { useMutation, queryCache } from 'react-query'
 import { useDispatch } from 'react-redux'
-import { asyncNotification } from '../../Notification/notificationSlice'
+
 import styled from 'styled-components'
-import { Icons } from '../../shared'
+
+import { asyncNotification } from '../Notification/notificationSlice'
+// API Access
+import { createNew } from '../../services/access'
+// StyledIcon
+import { Icons } from '../shared'
 
 function NewBoard() {
   const history = useHistory()
   const dispatch = useDispatch()
   const [createNote] = useMutation(createNew, {
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       queryCache.invalidateQueries('board')
-      await dispatch(asyncNotification(`CONTENT IS SAVED`))
+      await dispatch(asyncNotification('Content Created'))
     },
-    onError: async (data, error) => {
+    onError: async (_, error) => {
       await dispatch(asyncNotification(error.message))
-    }
+    },
   })
 
   async function onCreateNew() {
@@ -32,14 +36,14 @@ function NewBoard() {
   )
 }
 
-const StyledNewBoard = styled.button`
-  width: 36px;
-  height: 36px;
-  border: none;
-  border-radius: 50%;
-  padding: 0 0;
-  background: ${props => props.theme.bg0};
+const StyledNewBoard = styled.div`
+display: flex;
+float: right;
+margin: 12.5px;
+cursor: pointer;
+:hover {
+  background: ${({ theme }) => theme.bg2};
+}
 `
-
 
 export default NewBoard
