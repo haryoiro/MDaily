@@ -7,9 +7,9 @@ import { useQuery } from 'react-query'
 // Slate
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
-// Slate Plugin
 import { withHistory } from 'slate-history'
 import { withLayout, withShortcuts, markdownDecorator } from './SlatePlugins'
+import { isMod } from './SlatePlugins/utils'
 // AutoSave Hooks
 import { useAutoSave } from '../../hooks'
 // API Access
@@ -51,9 +51,7 @@ function MEditor() {
   if (isError) return <div>{error.message}</div>
 
   async function onHotKey(e) {
-    if (e.key === 's'
-      && currentText !== text
-      && ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey))) {
+    if (e.key === 's' && currentText !== text && isMod(e)) {
       e.preventDefault()
       await saveText(id)
     }
