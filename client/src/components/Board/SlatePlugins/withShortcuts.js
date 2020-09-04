@@ -4,9 +4,9 @@ import {
 } from 'slate'
 
 const SHORTCUTS = {
-  '*': 'list-item',
-  '-': 'list-item',
-  '+': 'list-item',
+  // '*': 'list-item',
+  // '-': 'list-item',
+  // '+': 'list-item',
   '>': 'block-quote',
   '#': 'heading-one',
   '##': 'heading-two',
@@ -42,9 +42,13 @@ const withShortcuts = (editor) => {
           { match: (n) => Editor.isBlock(editor, n) },
         )
 
-        if (type === 'list-item') {
-          const list = { type: 'bulleted-list', children: [] }
-          Transforms.wrapNodes(editor, list, { match: (n) => n.type === 'list-item' })
+        // if (type === 'list-item') {
+        //   const list = { type: 'bulleted-list', children: [] }
+        //   Transforms.wrapNodes(editor, list, { match: (n) => n.type === 'list-item' })
+        // }
+        if (type === 'code') {
+          const codeWrap = { type: 'code-block', children: [] }
+          Transforms.wrapNodes(editor, codeWrap, { match: ((n) => n.type === 'code') })
         }
 
         return
@@ -70,12 +74,12 @@ const withShortcuts = (editor) => {
         ) {
           Transforms.setNodes(editor, { type: 'paragraph' })
 
-          if (block.type === 'list-item') {
-            Transforms.unwrapNodes(editor, {
-              match: (n) => n.type === 'bulleted-list',
-              split: true,
-            })
-          }
+          // if (block.type === 'list-item') {
+          //   Transforms.unwrapNodes(editor, {
+          //     match: (n) => n.type === 'bulleted-list',
+          //     split: true,
+          //   })
+          // }
           return
         }
       }
