@@ -1,7 +1,56 @@
+/* eslint-disable jsx-a11y/heading-has-content */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+
+export function renderBlocks(props, editor, next) {
+  switch (props.node.type) {
+  case 'title':
+    return <h1 {...props} />
+  case 'block-quote':
+    return <BackQuote {...props} />
+  case 'bulleted-list':
+    return <Ul {...props} />
+  case 'heading-one':
+    return <h1 {...props} />
+  case 'heading-two':
+    return <h2 {...props} />
+  case 'heading-three':
+    return <h3 {...props} />
+  case 'heading-four':
+    return <h4 {...props} />
+  case 'heading-five':
+    return <h5 {...props} />
+  case 'heading-six':
+    return <h6 {...props} />
+  case 'list-item':
+    return <List {...props} />
+  case 'new-line':
+    return <P {...props} />
+  case 'code':
+    return <code {...props} />
+  default:
+    return next()
+  }
+}
+export function renderMarks(props, editor, next) {
+  const { children, mark, attributes } = props
+  switch (mark.type) {
+  case 'bold':
+    return <strong {...{ attributes }}>{children}</strong>
+  case 'italic':
+    return <em {...{ attributes }}>{children}</em>
+  case 'code':
+    return <code attributes={attributes}>{children}</code>
+  case 'underline':
+    return <u {...{ attributes }}>{children}</u>
+  case 'strikethrough':
+    return <s {...{ attributes }}>{children}</s>
+  default:
+    return next()
+  }
+}
 
 // それぞれのコンポーネントをスタイリング
 export const MarkedElements = ({ attributes, children, element }) => {
@@ -28,6 +77,8 @@ export const MarkedElements = ({ attributes, children, element }) => {
     return <List {...attributes}>{children}</List>
   case 'new-line':
     return <P {...attributes}>{children}</P>
+  case 'code-block':
+    return <CodeBlock attributes={attributes}>{children}</CodeBlock>
   case 'code':
     return <code {...attributes}>{children}</code>
   default:
@@ -35,8 +86,30 @@ export const MarkedElements = ({ attributes, children, element }) => {
   }
 }
 
-export const LeafElements = ({ attributes, children, leaf }) => {
-  return <Leaf {...attributes} leaf={leaf}>{children}</Leaf>
+export const LeafElements = ({ attributes, children, leaf }) => (
+  <Leaf {...attributes} leaf={leaf}>{children}</Leaf>
+)
+
+const syntaxHighlightLanguages = [
+  'markup',
+  'css',
+  'javascript',
+  'bash',
+  'c',
+]
+
+function CodeBlock({ attributes, children }) {
+  const [lang, setLang] = useState(syntaxHighlightLanguages[0])
+  return (
+    <pre {...attributes}>
+      <code {...attributes} className={`language-${lang}`}>{children}</code>
+      <select onChange={(e) => setLang(e.target.value)}>
+        {syntaxHighlightLanguages.map((a, i) => (
+          <option key={i}>{a}</option>
+        ))}
+      </select>
+    </pre>
+  )
 }
 
 const Leaf = styled.span`
@@ -54,6 +127,14 @@ text-decoration: ${leaf.underlined ? 'underline' : 'normal'};
     font-size: 0.8rem;
     color: #FB4934;
   }
+  :hover::before {
+    position: absolute;
+    font-family: monospace, Consolas;
+    content: ' ';
+    font-size: 1rem;
+    margin-top: -2px;
+    margin-left: -2px;
+  }
   ::before {
     position: absolute;
     font-family: monospace, Consolas;
@@ -61,6 +142,15 @@ text-decoration: ${leaf.underlined ? 'underline' : 'normal'};
     font-size: 1rem;
     margin-top: -2px;
     margin-left: -2px;
+    color: ${theme.bg2};
+  }
+  :hover::after {
+    position: absolute;
+    font-family: monospace, Consolas;
+    content: ' ';
+    font-size: 1.2rem;
+    margin-top: -2px;
+    margin-left: -0.6rem;
     color: ${theme.bg2};
   }
   ::after {
@@ -76,6 +166,20 @@ text-decoration: ${leaf.underlined ? 'underline' : 'normal'};
   ${leaf.list && `
   display: grid;
   grid-template-columns: 1rem 1fr;
+  padding-left: 0.75rem;
+  margin: 0;
+  ::before {
+    content: "•";
+    margin-left: -3px;
+    font-size: 130%;
+    width: 1rem;
+    line-height: 24px;
+    color: #FB4934;
+  }
+  span {
+    visibility hidden;
+  }
+}
   `}
   ${leaf.backquote && `
   display: inline-block;
@@ -101,17 +205,10 @@ ${(props) => props.leaf && `
 const P = styled(Span)`
 margin: 0;
 `
-const Titled = styled(Span)`
-  display: inline-block;
-  font-weight: bold;
-  font-size: 20px;
-  margin: 20px 0 10px 0;
-`
 const Ul = styled.ul`
 width: 100%;
 display: grid;
-padding-left: 1rem;
-border-left: solid 2px #978B75;
+padding-left: 0.75rem;
 margin: 0;
 li::before {
   content: "•";
