@@ -9,6 +9,7 @@ import {
   Notification,
   SideMenu,
   Editor,
+  MEditor,
   BoardList,
 } from './components'
 import {
@@ -28,7 +29,7 @@ export default function App() {
             <BoardList />
           </Route>
           <Route path="/board/:id">
-            <Editor />
+            <MEditor />
           </Route>
         </Switch>
       </BodyWrapper>

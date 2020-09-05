@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import {
-  Editor, Transforms, Range, Point,
+  Editor, Transforms, Range, Point, Block,
 } from 'slate'
 
 const SHORTCUTS = {
@@ -14,8 +14,9 @@ const SHORTCUTS = {
   '####': 'heading-four',
   '#####': 'heading-five',
   '######': 'heading-six',
-  '```': 'code',
+  '```': 'code-block',
 }
+
 
 const withShortcuts = (editor) => {
   const { deleteBackward, insertText } = editor
@@ -23,7 +24,7 @@ const withShortcuts = (editor) => {
   editor.insertText = (text) => {
     const { selection } = editor
 
-    if (text === ' ' && selection && Range.isCollapsed(selection)) {
+    if (selection && Range.isCollapsed(selection)) {
       const { anchor } = selection
       const block = Editor.above(editor, {
         match: (n) => Editor.isBlock(editor, n),
@@ -33,7 +34,14 @@ const withShortcuts = (editor) => {
       const range = { anchor, focus: start }
       const beforeText = Editor.string(editor, range)
       const type = SHORTCUTS[beforeText]
-      if (type) {
+
+      if (type && text === ' ') {
+        if (type === 'code-block') {
+          const codeBlock = { type: 'code-block', children: [] }
+          Transforms.wrapNodes(editor, codeBlock, { macth: (n) => n.type === 'code-block' })
+          Transforms.move(editor, { edge: 'end' })
+          return
+        }
         Transforms.select(editor, range)
         Transforms.delete(editor)
         Transforms.setNodes(
@@ -41,17 +49,10 @@ const withShortcuts = (editor) => {
           { type },
           { match: (n) => Editor.isBlock(editor, n) },
         )
-
-        // if (type === 'list-item') {
-        //   const list = { type: 'bulleted-list', children: [] }
-        //   Transforms.wrapNodes(editor, list, { match: (n) => n.type === 'list-item' })
-        // }
-        if (type === 'code') {
-          const codeWrap = { type: 'code-block', children: [] }
-          Transforms.wrapNodes(editor, codeWrap, { match: ((n) => n.type === 'code') })
-        }
-
         return
+      }
+      if (type === 'code-block') {
+        Transforms.setNodes(editor, { type: 'code' }, { match: (n) => n.type === 'code'})
       }
     }
 
@@ -68,18 +69,35 @@ const withShortcuts = (editor) => {
 
       if (match) {
         const [block, path] = match
+        console.log(block, path)
         const start = Editor.start(editor, path)
         if (
           block.type !== 'paragraph' && Point.equals(selection.anchor, start)
         ) {
-          Transforms.setNodes(editor, { type: 'paragraph' })
-
           // if (block.type === 'list-item') {
           //   Transforms.unwrapNodes(editor, {
           //     match: (n) => n.type === 'bulleted-list',
           //     split: true,
           //   })
+
+          // Transforms.setNodes(editor, { type: 'par' })
+          //   return
           // }
+          if (block.type === 'code-block') {
+            Transforms.unwrapNodes(editor, {
+              match: (n) => n.type === 'code-block',
+              split: true,
+            })
+            return
+          }
+          if (block.type === ('code') && path.length >= 2) {
+            Transforms.liftNodes(editor, {
+              match: (n) => n.type === 'code-block',
+            })
+            return
+          }
+
+          Transforms.setNodes(editor, { type: 'paragraph' })
           return
         }
       }

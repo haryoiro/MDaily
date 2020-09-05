@@ -8,8 +8,7 @@ import { useQuery } from 'react-query'
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
-import { withLayout, withShortcuts, markdownDecorator } from './SlatePlugins'
-import { isMod } from './SlatePlugins/utils'
+import { withLayout, withShortcuts, markdownDecorator, isHotkey, innerCodeDecorator } from './SlatePlugins'
 // AutoSave Hooks
 import { useAutoSave } from '../../hooks'
 // API Access
@@ -49,11 +48,15 @@ function MEditor() {
 
   if (isLoading) return <div>NOW LOADING...</div>
   if (isError) return <div>{error.message}</div>
+  console.log(editor)
+  function onHotKey(e) {
+    const { nativeEvent } = e
+    const { selection } = editor
 
-  async function onHotKey(e) {
-    if (e.key === 's' && currentText !== text && isMod(e)) {
+    if (isHotkey.isSave(nativeEvent) && currentText !== text) {
       e.preventDefault()
-      await saveText(id)
+      const save = async () => { await saveText(id) }
+      save()
     }
   }
   const handleChangeEditor = (value) => {

@@ -3,57 +3,10 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react'
 import styled from 'styled-components'
-
-export function renderBlocks(props, editor, next) {
-  switch (props.node.type) {
-  case 'title':
-    return <h1 {...props} />
-  case 'block-quote':
-    return <BackQuote {...props} />
-  case 'bulleted-list':
-    return <Ul {...props} />
-  case 'heading-one':
-    return <h1 {...props} />
-  case 'heading-two':
-    return <h2 {...props} />
-  case 'heading-three':
-    return <h3 {...props} />
-  case 'heading-four':
-    return <h4 {...props} />
-  case 'heading-five':
-    return <h5 {...props} />
-  case 'heading-six':
-    return <h6 {...props} />
-  case 'list-item':
-    return <List {...props} />
-  case 'new-line':
-    return <P {...props} />
-  case 'code':
-    return <code {...props} />
-  default:
-    return next()
-  }
-}
-export function renderMarks(props, editor, next) {
-  const { children, mark, attributes } = props
-  switch (mark.type) {
-  case 'bold':
-    return <strong {...{ attributes }}>{children}</strong>
-  case 'italic':
-    return <em {...{ attributes }}>{children}</em>
-  case 'code':
-    return <code attributes={attributes}>{children}</code>
-  case 'underline':
-    return <u {...{ attributes }}>{children}</u>
-  case 'strikethrough':
-    return <s {...{ attributes }}>{children}</s>
-  default:
-    return next()
-  }
-}
+import '../../app/prism-theme.css'
 
 // それぞれのコンポーネントをスタイリング
-export const MarkedElements = ({ attributes, children, element }) => {
+export const MarkedElements = ({ attributes, children, element, leaf }) => {
   switch (element.type) {
   case 'title':
     return <h1 {...attributes}>{children}</h1>
@@ -78,7 +31,7 @@ export const MarkedElements = ({ attributes, children, element }) => {
   case 'new-line':
     return <P {...attributes}>{children}</P>
   case 'code-block':
-    return <CodeBlock attributes={attributes}>{children}</CodeBlock>
+    return <pre {...attributes}>{children}</pre>
   case 'code':
     return <code {...attributes}>{children}</code>
   default:
@@ -86,29 +39,15 @@ export const MarkedElements = ({ attributes, children, element }) => {
   }
 }
 
-export const LeafElements = ({ attributes, children, leaf }) => (
-  <Leaf {...attributes} leaf={leaf}>{children}</Leaf>
-)
-
-const syntaxHighlightLanguages = [
-  'markup',
-  'css',
-  'javascript',
-  'bash',
-  'c',
-]
+export const LeafElements = ({ attributes, children, leaf }) => {
+  return (
+    <Leaf {...attributes} leaf={leaf}>{children}</Leaf>
+  )
+}
 
 function CodeBlock({ attributes, children }) {
-  const [lang, setLang] = useState(syntaxHighlightLanguages[0])
   return (
-    <pre {...attributes}>
-      <code {...attributes} className={`language-${lang}`}>{children}</code>
-      <select onChange={(e) => setLang(e.target.value)}>
-        {syntaxHighlightLanguages.map((a, i) => (
-          <option key={i}>{a}</option>
-        ))}
-      </select>
-    </pre>
+    <code {...attributes}>{children}</code>
   )
 }
 
@@ -117,9 +56,14 @@ ${({ leaf, theme }) => `
 fontWeight: ${leaf.bold ? 'bold' : 'normal'};
 fontStyle: ${leaf.italic ? 'italic' : 'normal'};
 text-decoration: ${leaf.underlined ? 'underline' : 'normal'};
+  ${leaf['code-block'] && `
+    padding-left: 5px;
+    background: #fff;
+  `}
   ${leaf.code && `
   background: ${theme.bg2};
   padding-bottom: 2px;
+  padding-left: 10px;
   border-radius: 6px;
   & span {
     font-family: "Lucida Console", Monaco, monospace;
