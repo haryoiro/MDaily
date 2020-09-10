@@ -11,6 +11,8 @@
     "fix": "yarn lint --fix"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.35",
+    "@emotion/styled": "^10.0.27",
     "@reduxjs/toolkit": "^1.1.0",
     "@styled-icons/boxicons-regular": "^10.18.0",
     "@styled-icons/foundation": "^10.18.0",
@@ -37,9 +39,7 @@
     "slate": "^0.58.4",
     "slate-history": "^0.58.4",
     "slate-hyperscript": "^0.58.4",
-    "slate-plain-serializer": "^0.7.13",
-    "slate-react": "^0.58.4",
-    "styled-components": "^5.1.1"
+    "slate-react": "^0.58.4"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

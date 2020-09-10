@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { ThemeProvider } from 'styled-components'
+import { ThemeProvider } from '@emotion/styled'
 import App from './App'
 import store from './app/store'
 import GlobalStyles from './app/GlobalStyles'

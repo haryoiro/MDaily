@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { useQuery, useMutation } from 'react-query'
 import { getAll, deleteDataById } from '../../services/access'
 import { Link, Slider, Icons } from '../shared'
@@ -71,7 +71,8 @@ function BoardList() {
                   <hr />
                   <button
                     type="button"
-                    onClick={(e) => onDelete(e, a.id)}>
+                    onClick={(e) => onDelete(e, a.id)}
+                  >
                     Delete This Page
                   </button>
                 </CardSettingButton>

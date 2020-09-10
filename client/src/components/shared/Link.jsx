@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { Link as BaseLink } from 'react-router-dom'
+import styled from '@emotion/styled'
 
 const Link = styled(BaseLink)`
 color: ${({ theme }) => theme.fg1};

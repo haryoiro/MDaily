@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ToggleLayer } from 'react-laag'
 
