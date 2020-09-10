@@ -1,0 +1,129 @@
+:root {
+  --fg-color: #EBDBB2;
+}
+.headingToolbar {
+  flex-wrap: wrap;
+}
+.slate-Toolbar.slate-HeadingToolbar {
+  display: grid;
+  grid-area: "toolbar";
+  grid-column: 2;
+  grid-row: 2;
+  grid-template-columns: repeat(auto-fill, minmax(28px, 1fr));
+  border-bottom: none;
+  padding: 0;
+  margin: 0px 75px 10px 60px;
+}
+.slate-ToolbarButton:hover path,
+.slate-ToolbarButton-active path {
+  color: #83A598;
+  display: grid;
+  grid-auto-rows: auto;
+}
+.editor {
+  display: grid;
+  font-family: "Roboto",Helvetica,Arial,"Hiragino Sans",sans-serif;
+}
+div.editor-header {
+  display: grid;
+  grid-area: "header";
+}
+div.editor-header-toolbar {
+  grid-area: "toolbar";
+  grid-column: 2;
+}
+div.editor-wrapper {
+  display: grid;
+  grid-column: 2;
+  overflow-y: scroll;
+  grid-area: "content";
+  margin: 20px 75px 60px 60px;
+  margin-top: 40px;
+  padding: 0;
+}
+@media screen and (min-width: 825px) {
+  div.slate-Toolbar.slate-HeadingToolbar {
+    margin: 10px auto 0px auto;
+    width: 862px;
+
+  }
+  div.editor-wrapper {
+    margin: 30px auto 0px auto;
+    width: 862px;
+  }
+}
+@media screen and (max-width: 550px) {
+  div.slate-Toolbar.slate-HeadingToolbar {
+    margin: -7px 25px 0px 25px;
+
+  }
+  div.editor-wrapper {
+    margin-top: 120px;
+    margin: 120px 10px 100px 30px;
+    padding: 10px 0 0 0;
+  }
+}
+.slate-Toolbar.slate-BalloonToolbar {
+  border: 2px solid #302e2e;
+  background: #282828;
+}
+.slate-ToolbarButton {
+  color: #444444;
+}
+.grid-container {
+  display: grid;
+  grid-area: "toolbar";
+  grid-row: 10px;
+}
+.slate-p {
+  line-height: 1.42857;
+  margin: 5px 0;
+  padding: 0;
+  word-break: normal;
+  word-wrap: break-word;
+}
+.slate-h1 {
+  font-size: 37.35px;
+}
+.slate-h2 {
+  font-size: 31.05px;
+}
+.slate-h3 {
+  font-size: 25.95px;
+}
+
+.slate-h4 {
+  font-size: 21.6px;
+}
+
+.slate-h5 {
+  font-size: 18px;
+}
+.slate-h6 {
+  font-size: 15px;
+}
+h1.slate-h1,
+h2.slate-h2,
+h3.slate-h3,
+h4.slate-h4,
+h5.slate-h5,
+h6.slate-h6,
+h1.slate-h1:not(:first-child),
+h2.slate-h2:not(:first-child),
+h3.slate-h3:not(:first-child),
+h4.slate-h4:not(:first-child),
+h5.slate-h5:not(:first-child),
+h6.slate-h6:not(:first-child) {
+font-feature-settings: "palt" 1;
+margin: 5px 0px;
+padding: 0;
+color: var(--fg-color);
+font-weight: bold;
+}
+
+a.slate-link{
+  background: #ffff;
+  cursor: pointer;
+  height: 10px;
+  width: 100vw;
+}

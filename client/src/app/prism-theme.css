@@ -150,3 +150,7 @@ pre[class*="language-"] > code[class*="language-"] {
   line-height: inherit;
   white-space: pre;
 }
+.slate-code-block {
+  background: #302e2e;
+  text-decoration: none;
+}

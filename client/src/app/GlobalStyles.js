@@ -19,8 +19,6 @@ const GlobalStyles = createGlobalStyle`
     text-rendering: optimizeLegibility;
     justify-content: center;
   }
-  #root {
-  }
   input[type=range] {
     -webkit-appearance: none;
     width: 100%;
