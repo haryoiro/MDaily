@@ -23,6 +23,11 @@ export async function updateDataById({ id, text }) {
   return res.data
 }
 
+export async function deleteDataById({ id }) {
+  const res = await axios.delete(`${NOTE_URI}/${id}`)
+  return res.data
+}
+
 export async function createNew() {
   const res = await axios.post(NOTE_URI)
   return res.data
