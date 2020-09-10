@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign, no-underscore-dangle */
-const { Schema, model, Types } = require('mongoose')
+const { Schema, model, Types} = require('mongoose')
 
-const boardSchema = new Schema(
+const noteSchema = new Schema(
   {
     title: {
       type: String,
@@ -9,20 +9,24 @@ const boardSchema = new Schema(
     contents: {
       type: Schema.Types.Mixed,
     },
-    user: {
+    boardId: {
       type: Types.ObjectId,
-      ref: 'User',
+      ref: 'Board',
+    },
+    thumbnail: {
+      type: String,
+      default: '',
     },
   },
   {
     timestamps: {
-      createdAt: 'created',
-      updatedAt: 'updated',
+      created: 'created',
+      updated: 'updated',
     },
-  }
+  },
 )
 
-boardSchema.set('toJSON', {
+noteSchema.set('toJSON', {
   transform: (doc, ret) => {
     ret.id = ret._id.toString()
     delete ret._id
@@ -30,6 +34,6 @@ boardSchema.set('toJSON', {
   },
 })
 
-const Board = model('Board', boardSchema)
+const Note = model('Note', noteSchema)
 
-module.exports = Board
+module.exports = { Note }

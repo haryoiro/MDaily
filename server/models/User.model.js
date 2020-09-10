@@ -6,9 +6,11 @@ const userSchema = Schema({
     type: String,
     minlength: 5,
     maxlength: 50,
+    unique: true,
   },
   email: {
     type: String,
+    unique: true,
   },
   hash: {
     type: String,
@@ -38,6 +40,7 @@ userSchema.set('toJSON', {
     ret.id = ret._id.toString()
     delete ret._id
     delete ret.__v
+    delete ret.hash
   },
 })
 
