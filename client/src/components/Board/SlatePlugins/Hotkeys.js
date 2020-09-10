@@ -8,6 +8,7 @@ const IS_APPLE = typeof navigator !== 'undefined' && /Mac OS X/.test(navigator.u
 
 const HOTKEYS = {
   save: 'mod+s',
+  tab: 'tab',
 }
 
 const APPLE_HOTKEYS = {
@@ -36,4 +37,5 @@ const create = (key) => {
 
 export default {
   isSave: create('save'),
+  isTab: create('tab'),
 }
