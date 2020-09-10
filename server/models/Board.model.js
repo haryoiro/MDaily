@@ -3,7 +3,7 @@ const { Schema, model, Types } = require('mongoose')
 
 const boardSchema = new Schema(
   {
-    title: {
+    boardName: {
       type: String,
       minlength: 5,
       maxlength: 20,
