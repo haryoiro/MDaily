@@ -1,10 +1,10 @@
 const router = require('express').Router()
-const Board = require('../models/Board')
-const User = require('../models/User')
+const { Board, User, Note } = require('../models')
 
 router.post('/reset', async (req, res) => {
   await Board.deleteMany({})
   await User.deleteMany({})
+  await Note.deleteMany({})
 
   res.status(204).end()
 })

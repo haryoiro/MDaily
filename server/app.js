@@ -43,8 +43,7 @@ app.use(mongoSanitize({ replaceWith: '_' }))
 app.use(httpRequestLogger)
 
 /* Routes */
-app.use('/api/board', require('./routes/board'))
-app.use('/api/auth', require('./routes/auth'))
+app.use('/api', require('./routes'))
 
 if (process.env.NODE_ENV !== 'production') {
   // eslint-disable-next-line global-require
