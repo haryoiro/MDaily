@@ -2,40 +2,39 @@
 
 ## API Endpoints
 
-### **/user**
+### **/user/**
 
-| method | auth | endpoint | description |
-|:-------|:----:|:---------|:------------|
+| method | auth | endpoint           | description |
+|:-------|:----:|:-------------------|:------------|
 | GET    |  o   | /:username/profile | プロフィール取得  |
 | PUT    |  o   | /:username/profile | プロフィールを編集 |
 
-### **/board**
+### **/board/**
 
-| method | auth | endpoint                | description        |
-|:-------|:----:|:------------------------|:-------------------|
-| PUT    | o    | /board/setting      | エディタ設定の更新           |
-| GET    |      | /board              | 所有するすべてのボードを取得 |
-| POST   | o    | /board              | 新規ボードを作成       |
-| GET    |      | /board/:id          | 特定のボードを取得      |
-| DELETE | o    | /board/:id          | 特定のボードを削除      |
-| GET    |      | /board/:id/note/:id | IDからノートを取得       |
-| POST   | o    | /board/:id/note     | 新規ノートを作成       |
-| PUT    | o    | /board/:id/note/:id | ノートを編集           |
+| method | auth | endpoint           | description            | body                                  | params      |
+|:-------|:----:|:-------------------|:-----------------------|:--------------------------------------|:------------|
+| GET    |  o   | /board             | ユーザが所有するすべてのボードを取得 |                                       |             |
+| POST   |  o   | /board             | 新規ボードを作成           | title: string,</br> isPrivate: boolean  |             |
+| GET    |      | /board/:boardName | タイトルからボードを取得         |                                       | :boardName |
+| DELETE |  o   | /board/:boardName | タイトルからボードを削除         |                                       | :boardName |
 
-### **/note**
+### **/note/**
 
-| method | auth | endpoint                | description        |
-|:-------|:----:|:------------------------|:-------------------|
-| GET    |      | /note/:id | IDからノートを取得       |
-| POST   | o    | /note     | 新規ノートを作成       |
-| PUT    | o    | /note/:id | ノートを編集           |
+| method | auth | endpoint  | description  | body | params |
+|:-------|:----:|:----------|:-------------|:-----|:-------|
+| POST   |  o   | /board/:boardName/note     | 新規ノートを作成 |      | :title |
+| GET    |      | /board/:boardName/note/:noteid | IDからノートを取得 |      |        |
+| PUT    |  o   | /board/:boardName/note/:noteid | ノートを編集     |      |        |
+| DELETE |  o   | /board/:boardName/note/:noteid | ノートを削除     |      |        |
+
 
 ### **/auth**
 
-| method | auth | endpoint  | description |
-|:-------|:----:|:----------|:------------|
-| POST   |      | /register | 新規ユーザ登録 |
-| POST   |      | /signin   | ログイン        |
+| method | auth | endpoint   | description   | body                                              | params |
+|:-------|:----:|:-----------|:--------------|:--------------------------------------------------|:-------|
+| POST   |      | /register  | 新規ユーザ登録   | password: string,</br> username: string,</br> email: string |        |
+| POST   |      | /signin    | ログイン          | password: string, username: string                |        |
+| GET    |  o   | /protected | authが必要なページ |                                                   |        |
 
 
 
