@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useQuery } from 'react-query'
-import { getAll } from '../../services/access'
+import { useQuery, useMutation } from 'react-query'
+import { getAll, deleteDataById } from '../../services/access'
 import { Link, Slider, Icons } from '../shared'
 import { Header, Tooltip } from '..'
 
@@ -20,22 +20,30 @@ function BoardList() {
   const {
     isLoading, isError, data, error, refetch,
   } = useQuery('board', () => getAll())
+  const [deleteContent] = useMutation(deleteDataById, {
+    onSuccess: async () => {
+      await refetch()
+    },
+  })
   const [layoutIndex, setLayoutIndex] = useState(0)
 
   if (isLoading) return <div>NOW LOADING...</div>
   if (isError) return <div>{error.message}</div>
 
-  function parseContentFromSlate(a) {
-    if (JSON.parse(a.contents.text).object) {
-      const title = JSON.parse(a.contents.text).document.nodes.map((a) => a.nodes)[0][0].leaves[0].text
-      return {
-        title: title || 'Untitled'
-      }
+  function parseContentFromSlate(a, type) {
+    if (type === 'title') {
+      const b = a.contents.text[0].children[0].children[0].text
+      return b
     }
-    const [title, ...description] = JSON.parse(a.contents.text)
-    return {
-      title: title.children[0].text !== '' ? title.children[0].text : 'Untitled',
-      description: description.map((b) => b.children[0].text).join('\n'),
+    if (type === 'description') {
+      const b = a.contents.text[0].children.map((a) => a.children[0].text).splice(0).join('\n')
+      return b
+    }
+  }
+  function onDelete(e, id) {
+    e.preventDefault()
+    if (window.confirm('本当に削除しますか？')) {
+      deleteContent({ id })
     }
   }
   return (
@@ -55,18 +63,22 @@ function BoardList() {
 
               <div className="header">
                 <div className="title">
-                  {parseContentFromSlate(a)?.title}
+                  {parseContentFromSlate(a, 'title')}
                 </div>
                 <CardSettingButton>
                   <div>Copy Link</div>
                   <div>Hello</div>
                   <hr />
-                  <div>Delete This Page</div>
+                  <button
+                    type="button"
+                    onClick={(e) => onDelete(e, a.id)}>
+                    Delete This Page
+                  </button>
                 </CardSettingButton>
               </div>
 
               <div className="description">
-                {parseContentFromSlate(a)?.description}
+                {parseContentFromSlate(a, 'description')}
               </div>
             </Link>
           </CardWrapper>
@@ -84,13 +96,13 @@ grid-auto-rows: ${({ y }) => y};
 grid-template-columns: repeat(auto-fill, minmax(${({ x }) => x}, 1fr));
 gap: 20px;
 overflow-y: scroll;
-padding: 10px 120px 0 60px;
+padding: 10px 120px 0 35px;
 height: 100vh;
 
 @media screen and (max-width: 550px) {
   grid-template-columns: repeat(auto-fill, minmax(${({ x }) => x}, 1fr));
 
-  margin-top: 120px;
+  margin-top: 60px;
   padding: 10px 30px 0 30px;
 }
 `
@@ -153,7 +165,7 @@ a {margin:0;padding:0;}
 // eslint-disable-next-line react/prop-types
 function CardSettingButton({ children }) {
   return (
-    <div onClick={(e) => e.preventDefault()} className="setting">
+    <div className="setting">
       <Tooltip text={<>{ children }</>}>
         <Icons.EllipsisIcon />
       </Tooltip>
