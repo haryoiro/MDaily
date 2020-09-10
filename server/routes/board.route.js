@@ -8,7 +8,7 @@ const { authenticateChecker } = require('../middlewares/authenticateChecker')
 const creator = require('../helpers/jsonResponseCreator')
 const { SECRET } = require('../configs')
 
-boardRouter.use('/:boardTitle', noteRouter)
+boardRouter.use('/:boardName', noteRouter)
 
 // 所有するすべてのボードを取得
 boardRouter.route('/')
@@ -24,9 +24,9 @@ boardRouter.route('/')
   })
   // 新規ボード
   .post(authenticateChecker, async (req, res) => {
-    const { title, isPrivate } = req.body
+    const { boardName, isPrivate } = req.body
     const { auth } = req
-    if (!title) {
+    if (!boardName) {
       return res
         .status(400)
         .send(creator(400, 'Title is required'))
@@ -39,7 +39,7 @@ boardRouter.route('/')
         .send(creator(404, 'NOT FOUND'))
     }
 
-    const isTitleExists = await Board.findOne({ title, ownerId: user.id })
+    const isTitleExists = await Board.findOne({ boardName, ownerId: user.id })
     if (isTitleExists) {
       return res
         .status(409)
@@ -53,7 +53,7 @@ boardRouter.route('/')
     const savedNote = await newNote.save()
 
     const newBoard = new Board({
-      title,
+      boardName,
       ownerId: auth.id,
       private: isPrivate || true,
       notes: [savedNote.id],
@@ -67,11 +67,12 @@ boardRouter.route('/')
   })
 
 // タイトルからボードを取得
-boardRouter.route('/:boardTitle')
+boardRouter
+  .route('/:boardName')
   .get(async (req, res) => {
-    const { boardTitle } = req.params
+    const { boardName } = req.params
     const returnedBoard = await Board
-      .findOne({ title: boardTitle })
+      .findOne({ boardName })
       .populate('notes')
     if (!returnedBoard) {
       return res
@@ -81,11 +82,15 @@ boardRouter.route('/:boardTitle')
     if (returnedBoard.private !== null && returnedBoard.private) {
       const authHeader = req.headers.authorization
       const token = authHeader && authHeader.split(' ')[1]
-      if (!token) return res.status(401)
+      if (!token) {
+        return res
+          .status(401)
+          .json(creator(401, 'auth is required'))
+      }
 
       const isAuth = await jwt.verify(token, SECRET)
       // eslint-disable-next-line no-underscore-dangle
-      if (!isAuth || isAuth.id !== String(returnedBoard.id)) {
+      if (!isAuth || String(isAuth.id) !== String(returnedBoard.ownerId)) {
         return res
           .status(403)
           .json(creator(403, 'Forbidden'))
@@ -94,11 +99,11 @@ boardRouter.route('/:boardTitle')
     return res.send(returnedBoard)
   })
   .delete(authenticateChecker, async (req, res) => {
-    const { boardTitle } = req.params
+    const { boardName } = req.params
     const { auth } = req
     // 渡されたタイトルのボードが存在するか
     const returnedBoard = await Board
-      .findOne({ title: boardTitle, ownerId: auth.id })
+      .findOne({ boardName, ownerId: auth.id })
       .select('ownerId')
     if (String(returnedBoard.ownerId) !== String(auth.id)) {
       return res
@@ -113,7 +118,7 @@ boardRouter.route('/:boardTitle')
 
     return res
       .status(204)
-      .json(creator(204, `${boardTitle} id deleted`))
+      .json(creator(204, `${boardName} id deleted`))
   })
 
 // ボード設定
