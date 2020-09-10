@@ -25,18 +25,10 @@ authRouter
     const { password, username } = req.body
 
     const currentUser = await User.findOne({ username })
-    if (!currentUser) {
-      return res
-        .status(400)
-        .send(creator(400, 'AuthenticateError', 'Invalid Password or Email'))
-    }
+    if (!currentUser) return res.status(400).send(creator(400, 'AuthenticateError', 'Invalid Password or Email'))
 
     const isValid = await validHash(password, currentUser.hash)
-    if (!isValid) {
-      return res
-        .status(400)
-        .send(creator(400, 'AuthenticateError', 'Invalid Password or Email'))
-    }
+    if (!isValid) return res.status(400).send(creator(400, 'AuthenticateError', 'Invalid Password or Email'))
 
     const { token } = await issueJWT(currentUser)
     return res.status(200).json({

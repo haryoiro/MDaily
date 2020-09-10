@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { useMutation, queryCache } from 'react-query'
 import { useDispatch } from 'react-redux'
 
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 import { asyncNotification } from '../Notification/notificationSlice'
 // API Access

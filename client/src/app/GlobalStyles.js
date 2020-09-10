@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from '@emotion/styled'
 import reboot from './reboot.css'
 
 const GlobalStyles = createGlobalStyle`

@@ -15,9 +15,7 @@ boardRouter.route('/')
   .get(authenticateChecker, async (req, res) => {
     const { auth } = req
     const users = await User.findById(auth.id)
-      .select('boards')
-      .populate('boards')
-      .populate('notes')
+      .select('boards').populate('boards').populate('notes')
       .limit(100)
       .sort()
     return res.send(users)
@@ -26,25 +24,13 @@ boardRouter.route('/')
   .post(authenticateChecker, async (req, res) => {
     const { boardName, isPrivate } = req.body
     const { auth } = req
-    if (!boardName) {
-      return res
-        .status(400)
-        .send(creator(400, 'Title is required'))
-    }
+    if (!boardName) return res.status(400).send(creator(400, 'Title is required'))
 
     const user = await User.findById(auth.id)
-    if (!user) {
-      return res
-        .status(404)
-        .send(creator(404, 'NOT FOUND'))
-    }
+    if (!user) return res.status(404).send(creator(404, 'NOT FOUND'))
 
     const isTitleExists = await Board.findOne({ boardName, ownerId: user.id })
-    if (isTitleExists) {
-      return res
-        .status(409)
-        .send(creator(409, 'DuplicatedTitle'))
-    }
+    if (isTitleExists) return res.status(409).send(creator(409, 'DuplicatedTitle'))
 
     const newNote = await new Note({
       title: 'Welcome',
@@ -74,19 +60,12 @@ boardRouter
     const returnedBoard = await Board
       .findOne({ boardName })
       .populate('notes')
-    if (!returnedBoard) {
-      return res
-        .status(404)
-        .json(creator(404, 'Board Not Found'))
-    }
+    if (!returnedBoard) return res.status(404).json(creator(404, 'Board Not Found'))
+
     if (returnedBoard.private !== null && returnedBoard.private) {
       const authHeader = req.headers.authorization
       const token = authHeader && authHeader.split(' ')[1]
-      if (!token) {
-        return res
-          .status(401)
-          .json(creator(401, 'auth is required'))
-      }
+      if (!token) return res.status(401).json(creator(401, 'auth is required'))
 
       const isAuth = await jwt.verify(token, SECRET)
       // eslint-disable-next-line no-underscore-dangle
@@ -105,10 +84,9 @@ boardRouter
     const returnedBoard = await Board
       .findOne({ boardName, ownerId: auth.id })
       .select('ownerId')
+
     if (String(returnedBoard.ownerId) !== String(auth.id)) {
-      return res
-        .status(403)
-        .json(creator(403, 'You are not owner for this board'))
+      return res.status(403).json(creator(403, 'You are not owner for this board'))
     }
     await Board.findByIdAndRemove(String(returnedBoard._id))
     // Userが所有するboardsフィールドから削除したボードのIDを除外
