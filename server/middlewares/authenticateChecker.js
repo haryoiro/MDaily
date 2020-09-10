@@ -20,11 +20,11 @@ async function authenticateChecker(req, res, next) {
   const authHeader = req.headers.authorization
   const token = authHeader && authHeader.split(' ')[1]
   console.log(authHeader, token)
-  if (!token) return res.status(401)
+  if (!token) return res.status(401).json(creator(401, 'auth is required'))
 
   const isAuth = await jwt.verify(token, SECRET)
   if (!isAuth) {
-    return res.status(403)
+    return res.status(403).json(creator(403, 'Unauth'))
   }
   req.auth = isAuth
   return next()
