@@ -1,9 +1,7 @@
-const unknownEndpoint = (req, res) => {
-  res.status(404).json({
-    success: false,
-    code: 404,
-    message: '404 NOT FOUND',
-  })
-}
+const create = require('../helpers/jsonResponseCreator').jsonResponse
+
+const unknownEndpoint = (err, req, res) => res
+  .status(404)
+  .json(create(404, err.name, err.message))
 
 module.exports = unknownEndpoint
