@@ -6,17 +6,14 @@ const creator = require('../helpers/jsonResponseCreator')
 const { Board } = require('../models/Board.model')
 
 // 新規ノートを作成
-noteRouter.route('/')
+noteRouter
+  .route('/')
   .post(authenticateChecker, async (req, res) => {
     const { boardName } = req.params
     const { auth } = req
 
     const returnedBoard = await Board.findOne({ boardName, ownerId: auth.id }).select('notes')
-    if (!returnedBoard) {
-      return res
-        .status(404)
-        .json(creator(404, 'Board Not Found'))
-    }
+    if (!returnedBoard) return res.status(404).json(creator(404, 'Board Not Found'))
 
     const newNote = await new Note({
       ...slateInitialValue,
@@ -36,20 +33,14 @@ noteRouter
     const { id } = req.params
 
     const note = await Note.findById(id)
-    if (!note) {
-      return res
-        .status(404)
-        .send(creator(404, `Note id:${id} is not found`))
-    }
+    if (!note) return res.status(404).send(creator(404, `Note id:${id} is not found`))
 
     return res.json(note.toJSON())
   })
   .put(async (req, res) => {
     const { body } = req
     const { id } = req.params
-    if (!body) {
-      return res.status(400)
-    }
+    if (!body) return res.status(400).json(creator(400, 'content is required'))
     const note = await Note.findOneAndUpdate(
       { _id: id },
       {
@@ -72,11 +63,8 @@ noteRouter
     const { id } = req.params
 
     const message = await Note.findByIdAndRemove(id)
-    if (!message) {
-      return res
-        .status(404)
-        .send(creator(404, `Note id:${id} is not found`))
-    }
+    if (!message) return res.status(404).send(creator(404, `Note id:${id} is not found`))
+
     return res.status(204).json({ success: true, message })
   })
 
