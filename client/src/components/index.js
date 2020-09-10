@@ -1,6 +1,5 @@
 export { default as SideMenu } from './SideMenu/SideMenu'
 export { default as NewBoard } from './NewBoard/NewBoard'
-export { default as Editor } from './Board/Editor'
 export { default as MEditor } from './Board/MEditor'
 export { default as BoardList } from './Board/BoardList'
 export { default as Notification } from './Notification/Notification'

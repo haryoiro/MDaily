@@ -8,7 +8,6 @@ import {
 import {
   Notification,
   SideMenu,
-  Editor,
   MEditor,
   BoardList,
 } from './components'
