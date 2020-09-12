@@ -1,5 +1,3 @@
-export { default as Button } from './Button'
-export { default as Card } from './Card'
 export { default as Icons } from './Icons'
 export { default as Grid } from './Grid'
 export { default as Link } from './Link'

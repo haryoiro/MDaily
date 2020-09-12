@@ -1,7 +1,8 @@
-import { createGlobalStyle } from '@emotion/styled'
+import styled from '@emotion/styled'
+import { Global } from '@emotion/core'
 import reboot from './reboot.css'
 
-const GlobalStyles = createGlobalStyle`
+const GlobalStyles = styled(Global)`
   ${reboot}
   html, body {
     margin: 0;
