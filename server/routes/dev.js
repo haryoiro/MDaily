@@ -9,6 +9,15 @@ router.post('/reset', async (req, res) => {
   res.status(204).end()
 })
 
+router
+  .route('/all')
+  .get(async (req, res) => {
+    const returned = await User
+      .find({})
+      .populate('boards')
+      .populate('notes')
+    return res.status(200).json(returned)
+  })
 // router.post('/initialize', async (req, res) => {
 //   const ROLEsObject = {
 //     role: ""

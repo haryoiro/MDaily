@@ -1,37 +1,26 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from 'react-router-dom'
-import {
-  Notification,
-  SideMenu,
-  MEditor,
-  BoardList,
-} from './components'
-import {
-  BodyWrapper,
-} from './components/shared'
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
 
-export default function App() {
+function App() {
   return (
-    <Router>
-      <BodyWrapper>
-        <Notification />
-        <SideMenu>
-          {/* <NewBoard /> */}
-        </SideMenu>
-        <Switch>
-          <Route exact path="/">
-            <BoardList />
-          </Route>
-          <Route path="/board/:id">
-            <MEditor />
-          </Route>
-        </Switch>
-      </BodyWrapper>
-    </Router>
-  )
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
 }
+
+export default App;
