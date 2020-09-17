@@ -6,16 +6,24 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "emotion-theming": "^10.0.27",
+    "framer-motion": "^2.6.13",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "rebase": "^0.3.0"
+    "rebass": "^4.0.7",
+    "reflexbox": "^4.0.6",
+    "theme-ui": "^0.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cosmos": "cosmos",
+    "cosmos:export": "cosmos-export",
+    "server": "json-server -p4001 --watch db.json"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -31,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-cosmos": "^5.5.0"
   }
 }
