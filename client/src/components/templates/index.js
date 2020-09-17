@@ -1,0 +1,6 @@
+export { default as _404 } from './_404'
+export { default as LandingPage } from './LandingPage'
+export { default as MainPage } from './MainPage'
+export { default as Login } from './Login'
+export { default as Profile } from './Profile'
+export { default as Register } from './Register'
