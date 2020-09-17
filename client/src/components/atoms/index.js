@@ -1,0 +1,5 @@
+export { default as Icon } from './Icon'
+export { default as Infomation } from './Infomation'
+export { default as SubHeading } from './SubHeading'
+export { default as Description } from './Description'
+export { default as Burger} from './Burger'
