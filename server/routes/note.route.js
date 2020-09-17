@@ -6,7 +6,8 @@ const creator = require('../helpers/jsonResponseCreator')
 const { Board } = require('../models/Board.model')
 
 // 新規ノートを作成
-noteRouter.route('/')
+noteRouter
+  .route('/')
   .post(authenticateChecker, async (req, res) => {
     const { boardName } = req.params
     const { auth } = req
