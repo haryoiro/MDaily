@@ -1,17 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import ReactDOM from 'react-dom'
+import { ThemeProvider, Styled } from 'theme-ui'
+import theme from './theme/theme'
 import App from './App';
-import * as serviceWorker from './serviceWorker';
+const Root = Styled.root
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <Root>
+        <App />
+      </Root>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
-);
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+)
