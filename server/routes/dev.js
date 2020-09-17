@@ -14,8 +14,12 @@ router
   .get(async (req, res) => {
     const returned = await User
       .find({})
-      .populate('boards')
-      .populate('notes')
+      .populate({
+        path: 'boards',
+        populate: {
+          path: 'notes',
+        },
+      })
     return res.status(200).json(returned)
   })
 // router.post('/initialize', async (req, res) => {
